@@ -1,12 +1,12 @@
 package com.jxnu.cure.geekbrowser;
 
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
     implements HomeFragment.OnFragmentInteractionListener {
@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity
 
                     return true;
                 case R.id.navigation_backward:
-
+                    onClickBackward();
                     return true;
                 case R.id.navigation_forward:
-
+                    onClickForward();
                     return true;
                 case R.id.navigation_menu:
 
@@ -47,5 +47,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onClickBackward() {
+        ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragView_home)).backPage();
+    }
+
+    @Override
+    public void onClickForward() {
+        ((HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragView_home)).forPage();
     }
 }

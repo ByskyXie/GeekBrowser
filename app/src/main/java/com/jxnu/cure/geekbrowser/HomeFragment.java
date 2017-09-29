@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +79,9 @@ public class HomeFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.img_commit:
-                temp = "http://"+et_website.getText().toString();
+                temp = et_website.getText().toString();
+                if(temp.length()<7||!temp.substring(0,7).equals("http://"))
+                    temp = "http://"+et_website.getText().toString();
                 if(!temp.equals("http://")){
                     webView_home.loadUrl(temp);
                     webView_home.setWebViewClient(myClient);
@@ -152,5 +153,15 @@ public class HomeFragment extends Fragment
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        void onClickBackward();
+        void onClickForward();
+    }
+    public void backPage(){
+        if(webView_home.canGoBack())
+            webView_home.goBack();
+    }
+    public void forPage(){
+        if(webView_home.canGoForward())
+            webView_home.goForward();
     }
 }
