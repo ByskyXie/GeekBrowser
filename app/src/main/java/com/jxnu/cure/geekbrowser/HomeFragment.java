@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ public class HomeFragment extends Fragment
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private FragWebClient myClient;
+    private WebSettings webSettings;
     private EditText et_website;
     private WebView webView_home;
     private ImageButton imgButton;
@@ -87,6 +89,8 @@ public class HomeFragment extends Fragment
                     webView_home.setWebViewClient(myClient);
                 }
                 break;
+            case R.id.editText_website:
+                break;
         }
     }
 
@@ -114,6 +118,9 @@ public class HomeFragment extends Fragment
         et_website =  getActivity().findViewById(R.id.editText_website);
         imgButton = getActivity().findViewById(R.id.img_commit);
         imgButton.setOnClickListener(this);
+        et_website.setOnClickListener(this);
+        webSettings = webView_home.getSettings();
+        webSettings.setJavaScriptEnabled(true);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -163,5 +170,8 @@ public class HomeFragment extends Fragment
     public void forPage(){
         if(webView_home.canGoForward())
             webView_home.goForward();
+    }
+    public boolean canBack(){
+        return webView_home.canGoBack();
     }
 }

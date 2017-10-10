@@ -3,14 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_marginLeft="@dimen/mini_edgeToBorder"
+            android:layout_margin="@dimen/mini_edgeToBorder"
             android:background="@drawable/layout_border"
             android:id="@+id/layout_inputWebsite"
             android:layout_width="match_parent"

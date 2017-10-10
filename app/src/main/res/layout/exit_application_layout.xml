@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/double_mini_edge_border"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@drawable/layout_border"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="22sp"
+        android:layout_gravity="center"
+        android:text="@string/hint_for_exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/mini_edgeToBorder"
+        android:background="@color/colorGrayBlue"
+        android:layout_width="240dp"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_margin="@dimen/double_mini_edge_border"
+            android:textSize="18sp"
+            android:textColor="@color/coldGray"
+            android:background="@drawable/layout_border"
+            android:id="@+id/button_exit_cancel"
+            android:text="@string/text_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_margin="@dimen/double_mini_edge_border"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/layout_blue_border"
+            android:id="@+id/button_exit_confirm"
+            android:text="@string/text_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

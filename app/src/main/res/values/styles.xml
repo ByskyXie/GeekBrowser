@@ -8,10 +8,37 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Basic theme -->
     <style name="NewTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/colorGrayBlue</item>
         <item name="colorPrimaryDark">@color/colorDarkGrayBlue</item>
         <item name="colorAccent">@color/colorGold</item>
     </style>
+
+    <!-- Emerge and  Disappear Dialog-->
+    <style name="DialogAnim" parent="@android:style/Animation.Dialog">
+        <item name ="android:windowEnterAnimation">@anim/dialog_in</item>
+        <item name ="android:windowExitAnimation">@anim/dialog_out</item>
+    </style>
+
+    <!-- Dialog show style -->
+    <style name="DialogShow" parent="android:style/Theme.Dialog">
+        <!-- background transparent -->
+        <item name = "android:windowBackground">@android:color/transparent</item>
+        <item name = "android:windowContentOverlay">@null</item>
+        <!-- 悬浮于Activity -->
+        <item name = "android:windowIsFloating">true</item>
+        <!-- border frame -->
+        <item name = "android:windowFrame">@null</item>
+        <!-- vague effect -->
+        <item name = "android:backgroundDimEnabled">true</item>
+        <!-- no title -->
+        <item name = "android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name = "android:windowIsTranslucent">true</item>
+        <!-- point out the anim -->
+        <item name = "android:windowAnimationStyle">@style/DialogAnim</item>
+    </style>
+
 </resources>

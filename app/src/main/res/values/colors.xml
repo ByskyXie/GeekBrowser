@@ -7,4 +7,9 @@
     <color name="colorGrayBlue">#9091E5</color>
     <color name="colorDarkGrayBlue">#5772E5</color>
     <color name="colorGold">#E9E255</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="coldGray">#808A87</color>
 </resources>

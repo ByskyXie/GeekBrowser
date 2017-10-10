@@ -9,6 +9,8 @@
     <string name="title_menu">Menu</string>
     <string name="title_forward">Forward</string>
     <string name="title_setting">Setting</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hint_for_exit">你确定要退出吗？</string>
+    <string name="text_cancel">取消</string>
+    <string name="text_exit">退出</string>
 </resources>
