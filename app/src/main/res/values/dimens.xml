@@ -5,4 +5,11 @@
     <dimen name="mini_edgeToBorder">5dp</dimen>
     <dimen name="double_mini_edge_border">10dp</dimen>
     <dimen name="viewToBorder">16dp</dimen>
+
+
+    <dimen name="mini_dimen">5dp</dimen>
+    <dimen name="small_dimen">10dp</dimen>
+    <dimen name="mid_dimen">20dp</dimen>
+    <dimen name="big_dimen">40dp</dimen>
+    <dimen name="large_dimen">80dp</dimen>
 </resources>
