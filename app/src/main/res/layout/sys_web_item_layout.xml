@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_dimen"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:layout_marginTop="@dimen/small_dimen"
+        android:layout_marginHorizontal="@dimen/small_dimen"
+        android:id="@+id/button_sys_web_item"
+        android:background="@drawable/layout_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- 以下的gravity可能使得布局有问题 -->
+    <TextView
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/text_sys_web_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

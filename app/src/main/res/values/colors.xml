@@ -12,4 +12,16 @@
     <color name="black">#000000</color>
     <color name="gray">#C0C0C0</color>
     <color name="coldGray">#808A87</color>
+
+    <color name="fullTransparent">#00000000</color>
+    <color name="level_1_Transparent">#20000000</color>
+    <color name="level_2_Transparent">#40000000</color>
+    <color name="level_3_Transparent">#60000000</color>
+    <color name="level_4_Transparent">#80000000</color>
+    <color name="level_5_Transparent">#A0000000</color>
+    <color name="level_6_Transparent">#C0000000</color>
+    <color name="level_7_Transparent">#E0000000</color>
+    <color name="lightTransparent">#F0000000</color>
+
+
 </resources>

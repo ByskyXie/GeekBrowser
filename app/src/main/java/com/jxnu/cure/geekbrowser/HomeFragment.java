@@ -3,12 +3,13 @@ package com.jxnu.cure.geekbrowser;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +20,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -41,19 +39,25 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment
     implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
+    private String temp;
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private FragWebClient myClient;
-    private WebSettings webSettings;
-    private EditText et_website;
-    private WebView webView_home;
-    private ImageButton imgButton;
+    private FragWebClient myClient; //网址代理
+    private WebSettings webSettings;//网页显示的设置
+    private EditText et_website;    //网址输入框
+    private WebView webView_home;   //网页显示控件
+    private ImageButton imgButton;  //确定键
 
-    private RecyclerIndexAdapter.OnItemClickListener listener;
-    private RecyclerView recycler;
-    private ArrayList<IndexItem> item_list;
-    private String temp;
+    private LinearLayout web_navy;
+    //本地网页
+    private RecyclerView recycler_sys;
+    private ArrayList<IndexItem> item_list_sys;
+    private RecyclerSysWebAdapter.OnItemClickListener onItemClickListener_sys;
+    //用户收藏网页
+    private RecyclerView recycler_user;
+    private ArrayList<IndexItem> item_list_user;
+    private RecyclerIndexAdapter.OnItemClickListener onItemClickListener_user;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -126,8 +130,27 @@ public class HomeFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Activity act = getActivity();
-        ///
-        listener = new RecyclerIndexAdapter.OnItemClickListener() {
+        //网页收藏栏总布局
+        web_navy = act.findViewById(R.id.layout_web_navy);
+        //系统导航栏的监听器实例化及界面显示
+        onItemClickListener_sys = new RecyclerSysWebAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position, ArrayList<IndexItem> list) {
+                //点击事件加载对应URI
+                IndexItem item = list.get(position);
+                loadURL(item.getLink().toString(),webView_home);
+            }
+        };
+        int sys_column = 7;
+        item_list_sys = getItemListFromDatabase("SYS_WEBSITE");
+        recycler_sys = act.findViewById(R.id.recycler_sys_website);
+        GridLayoutManager glm_sys = new GridLayoutManager(getContext(),sys_column);
+        recycler_sys.setLayoutManager(glm_sys);
+        //recycler_sys.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.HORIZONTAL));//设置分割线
+        recycler_sys.setAdapter(new RecyclerSysWebAdapter(getContext(),item_list_sys,onItemClickListener_sys,glm_sys));
+
+        //用户导航栏的监听器实例化及界面显示
+        onItemClickListener_user = new RecyclerIndexAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position,  ArrayList<IndexItem> itemList) {
                 //点击事件加载对应URI
@@ -135,11 +158,13 @@ public class HomeFragment extends Fragment
                 loadURL(item.getLink().toString(),webView_home);
             }
         };
-        item_list = getItemList();
-        recycler = act.findViewById(R.id.recycle_index);         recycler.setAdapter( new RecyclerIndexAdapter(getContext(),item_list,listener));
-        GridLayoutManager glm = new GridLayoutManager(getContext(),4);   //宽度为4
-        recycler.setLayoutManager(glm);
-        ///
+        item_list_user = getItemListFromDatabase("USER_WEBSITE");
+        recycler_user = act.findViewById(R.id.recycler_user_website);
+        GridLayoutManager glm_user = new GridLayoutManager(getContext(),4);   //宽度为4
+        recycler_user.setLayoutManager(glm_user);
+        recycler_user.setAdapter( new RecyclerIndexAdapter(getContext(),item_list_user,onItemClickListener_user,glm_user));
+
+        //显示网页布局及输入框的初始化
         webView_home = act.findViewById(R.id.webView_home);     webView_home.setVisibility(View.GONE);//一开始不显示加载网页
         et_website =  act.findViewById(R.id.editText_website);  et_website.setOnClickListener(this);
         imgButton = act.findViewById(R.id.img_commit);          imgButton.setOnClickListener(this);
@@ -157,13 +182,18 @@ public class HomeFragment extends Fragment
         webView.setWebViewClient(myClient);
         webView.setVisibility(View.VISIBLE);
         //
-        recycler.setVisibility(View.GONE);
+        web_navy.setVisibility(View.GONE);
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -182,10 +212,12 @@ public class HomeFragment extends Fragment
         super.onDetach();
         mListener = null;
     }
-    private ArrayList<IndexItem> getItemList(){
-        //TODO 读取资料
-        Cursor cursor = BaseActivity.database.query("USER_WEBSITE",new String[]{"*"},null,null,null,null,null,null);
+
+    private ArrayList<IndexItem> getItemListFromDatabase(String table_name){
+        //读取用户资料
         ArrayList<IndexItem> list = new ArrayList<IndexItem>();
+        Cursor cursor = BaseActivity.database.query(table_name,new String[]{"*"}
+        ,null,null,null,null,null,null);
         if(!cursor.moveToFirst()){
             //尚未保存网址
             list.clear();
@@ -236,7 +268,7 @@ public class HomeFragment extends Fragment
         //TODO:后期直接使用webView_home的方法可能要找到并改为传参
         webView_home.stopLoading();
         webView_home.setVisibility(View.GONE);
-        recycler.setVisibility(View.VISIBLE);
+        web_navy.setVisibility(View.VISIBLE);
     }
     public boolean canBack(){
         return webView_home.canGoBack();

@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_margin="@dimen/mini_edgeToBorder"
+            android:layout_margin="@dimen/mini_dimen"
             android:background="@drawable/layout_border"
             android:id="@+id/layout_inputWebsite"
             android:layout_width="match_parent"
@@ -31,10 +31,29 @@
                 android:layout_height="40dp" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycle_index"
+        <LinearLayout
+            android:layout_marginHorizontal="@dimen/mini_dimen"
+            android:id="@+id/layout_web_navy"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:paddingHorizontal="@dimen/mini_dimen"
+                android:layout_marginBottom="@dimen/mini_dimen"
+                android:background="@drawable/shape_sys_web_navy"
+                android:id="@+id/recycler_sys_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:paddingHorizontal="@dimen/mini_dimen"
+                android:background="@drawable/shape_sys_web_navy"
+                android:id="@+id/recycler_user_website"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
 
         <WebView
             android:id="@+id/webView_home"

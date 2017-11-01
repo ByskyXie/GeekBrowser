@@ -18,8 +18,10 @@ public class BaseActivity extends AppCompatActivity {
         if(openHelper == null){
             openHelper = new DatabaseOpenHelper(this,"Browser.db",null,1);
             database = openHelper.getWritableDatabase();
+
         }
     }
     public DatabaseOpenHelper getOpenHelper(){ return openHelper;}
+
 }
 

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -106,8 +105,9 @@ public class MainActivity extends BaseActivity
                 exitDialog.cancel();
                 break;
             case R.id.button_exit_confirm:
+                //TODO:退出前保存数据
                 finish();
-                onDestroy();
+                System.exit(0);
                 break;
         }
     }
