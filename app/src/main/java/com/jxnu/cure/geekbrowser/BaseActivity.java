@@ -23,5 +23,8 @@ public class BaseActivity extends AppCompatActivity {
     }
     public DatabaseOpenHelper getOpenHelper(){ return openHelper;}
 
+    protected void initialUI(){
+
+    }
 }
 

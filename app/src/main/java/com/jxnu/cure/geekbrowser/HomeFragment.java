@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -22,7 +23,6 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -38,6 +38,8 @@ import java.util.ArrayList;
  */
 public class HomeFragment extends Fragment
     implements View.OnClickListener{
+    final static int SHOW_INDEX = 0;
+    final static int SHOW_WEB = 1;
     // TODO: Rename parameter arguments, choose names that match
     private String temp;
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +47,7 @@ public class HomeFragment extends Fragment
     private static final String ARG_PARAM2 = "param2";
     private FragWebClient myClient; //网址代理
     private WebSettings webSettings;//网页显示的设置
-    private EditText et_website;    //网址输入框
+    private EditText etWebsite;    //网址输入框
     private WebView webView_home;   //网页显示控件
     private ImageButton imgButton;  //确定键
 
@@ -72,6 +74,12 @@ public class HomeFragment extends Fragment
             if(webView_home!=null)
                 webView_home.loadUrl(temp);
             return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            //TODO：执行去广告操作
         }
     }
     public HomeFragment() {
@@ -100,8 +108,7 @@ public class HomeFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.img_commit:
-                webView_home.setVisibility(View.VISIBLE);
-                temp = et_website.getText().toString();
+                temp = etWebsite.getText().toString();
                 loadURL(temp,webView_home);
                 break;
             case R.id.editText_website:
@@ -166,7 +173,7 @@ public class HomeFragment extends Fragment
 
         //显示网页布局及输入框的初始化
         webView_home = act.findViewById(R.id.webView_home);     webView_home.setVisibility(View.GONE);//一开始不显示加载网页
-        et_website =  act.findViewById(R.id.editText_website);  et_website.setOnClickListener(this);
+        etWebsite =  act.findViewById(R.id.editText_website);  etWebsite.setOnClickListener(this);
         imgButton = act.findViewById(R.id.img_commit);          imgButton.setOnClickListener(this);
         webSettings = webView_home.getSettings();               webSettings.setJavaScriptEnabled(true);
     }
@@ -180,9 +187,7 @@ public class HomeFragment extends Fragment
         //处理后网址不为空，即只有"http://"
         webView.loadUrl(net);
         webView.setWebViewClient(myClient);
-        webView.setVisibility(View.VISIBLE);
-        //
-        web_navy.setVisibility(View.GONE);
+        changeVisible(SHOW_WEB);
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -237,6 +242,16 @@ public class HomeFragment extends Fragment
         return list;
     }
 
+    public void changeVisible(int changePlan){
+        if(changePlan == SHOW_INDEX){
+            web_navy.setVisibility(View.VISIBLE);
+            webView_home.stopLoading();
+            webView_home.setVisibility(View.GONE);
+        }else if(changePlan == SHOW_WEB){
+            web_navy.setVisibility(View.GONE);
+            webView_home.setVisibility(View.VISIBLE);
+        }
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -258,18 +273,17 @@ public class HomeFragment extends Fragment
         if(webView_home.canGoBack())
             webView_home.goBack();
         else
-            goHome();
+            changeVisible(SHOW_INDEX);
     }
     public void forPage(){
-        if(webView_home.canGoForward())
-            webView_home.goForward();
+        if(webView_home.canGoForward()){
+            if(web_navy.getVisibility() == View.VISIBLE)
+                changeVisible(SHOW_WEB);
+            else
+                webView_home.goForward();
+        }
     }
-    public void goHome(){
-        //TODO:后期直接使用webView_home的方法可能要找到并改为传参
-        webView_home.stopLoading();
-        webView_home.setVisibility(View.GONE);
-        web_navy.setVisibility(View.VISIBLE);
-    }
+
     public boolean canBack(){
         return webView_home.canGoBack();
     }

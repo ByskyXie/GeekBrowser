@@ -54,8 +54,6 @@ public class RecyclerSysWebAdapter extends RecyclerView.Adapter<RecyclerSysWebAd
     @Override
     public void onBindViewHolder(SysWebHolder holder, final int position) {
         IndexItem item = list.get(position);
-        if(item == null)
-            return;
         holder.indexItem = item;
         holder.textView.setText(item.getText());
         if(item.getImg() != IndexItem.NONE_IMAGE){

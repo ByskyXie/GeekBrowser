@@ -9,7 +9,7 @@
         android:layout_marginTop="@dimen/small_dimen"
         android:layout_marginHorizontal="@dimen/small_dimen"
         android:id="@+id/button_sys_web_item"
-        android:background="@drawable/layout_border"
+        android:background="@drawable/shape_button_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

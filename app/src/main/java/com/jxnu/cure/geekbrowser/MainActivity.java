@@ -2,22 +2,31 @@ package com.jxnu.cure.geekbrowser;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.util.AttributeSet;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 
 public class MainActivity extends BaseActivity
         implements HomeFragment.OnFragmentInteractionListener, View.OnClickListener {
     private HomeFragment homeFragment;
     private Dialog exitDialog;
+    private BottomNavigationView navigation;
+    private View layout;
+    private Context context;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -35,6 +44,13 @@ public class MainActivity extends BaseActivity
                     onClickForward();
                     return true;
                 case R.id.navigation_menu:
+//                    PopupMenu popupMenu = new PopupMenu( context,navigation);
+//                    popupMenu.getMenuInflater().inflate(R.menu.navigation,popupMenu.getMenu());
+////                    popupMenu.setOnMenuItemClickListener();
+//                    popupMenu.show();
+                    IndexMenuAttributeSet set = new IndexMenuAttributeSet();
+                    PopupWindow popupWindow = new PopupWindow(context, set);
+                    popupWindow.showAsDropDown(navigation);
 
                     return true;
             }
@@ -48,10 +64,12 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragView_home);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        context = this;
+        //导航栏
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
 
+    }
 
     /**
      * function: when touch back button,go back the forward website .
@@ -118,7 +136,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onClickHome() {  homeFragment.goHome();}
+    public void onClickHome() {  homeFragment.changeVisible(HomeFragment.SHOW_INDEX);}
 
     @Override
     public void onClickBackward() {

@@ -55,8 +55,6 @@ public class RecyclerIndexAdapter extends RecyclerView.Adapter<RecyclerIndexAdap
     public void onBindViewHolder(IndexHolder holder, final int position) {
         IndexItem item = item_list.get(position);
         holder.indexItem = item;
-        if(item == null)
-            return;
         holder.indexItem = item;
         holder.textView.setText(item.getText());
 

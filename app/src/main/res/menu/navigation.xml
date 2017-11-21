@@ -6,13 +6,13 @@
         android:icon="@drawable/ic_goleft"
         android:title="@string/title_backward"/>
     <item
-    android:id="@+id/navigation_forward"
-    android:icon="@drawable/ic_goright"
-    android:title="@string/title_forward"/>
+        android:id="@+id/navigation_forward"
+        android:icon="@drawable/ic_goright"
+        android:title="@string/title_forward"/>
     <item
-    android:id="@+id/navigation_menu"
-    android:icon="@drawable/ic_menu"
-    android:title="@string/title_menu" />
+        android:id="@+id/navigation_menu"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/title_menu" />
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
