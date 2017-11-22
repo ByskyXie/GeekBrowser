@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/small_dimen"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:text="设置"
+        android:background="@drawable/layout_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="退出"
+        android:layout_marginTop="@dimen/small_dimen"
+        android:background="@drawable/layout_border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

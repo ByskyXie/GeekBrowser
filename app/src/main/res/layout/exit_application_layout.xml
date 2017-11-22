@@ -25,7 +25,6 @@
         <Button
             android:layout_margin="@dimen/double_mini_edge_border"
             android:textSize="18sp"
-            android:textColor="@color/coldGray"
             android:background="@drawable/shape_button_light"
             android:id="@+id/button_exit_cancel"
             android:text="@string/text_cancel"

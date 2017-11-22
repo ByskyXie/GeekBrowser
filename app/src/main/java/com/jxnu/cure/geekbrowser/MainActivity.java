@@ -8,25 +8,29 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+
+import java.util.zip.Inflater;
 
 public class MainActivity extends BaseActivity
         implements HomeFragment.OnFragmentInteractionListener, View.OnClickListener {
     private HomeFragment homeFragment;
     private Dialog exitDialog;
-    private BottomNavigationView navigation;
-    private View layout;
-    private Context context;
+    private ImageButton navFor,navBack,navMenu,navPage,navHome;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,10 +52,13 @@ public class MainActivity extends BaseActivity
 //                    popupMenu.getMenuInflater().inflate(R.menu.navigation,popupMenu.getMenu());
 ////                    popupMenu.setOnMenuItemClickListener();
 //                    popupMenu.show();
-                    IndexMenuAttributeSet set = new IndexMenuAttributeSet();
-                    PopupWindow popupWindow = new PopupWindow(context, set);
-                    popupWindow.showAsDropDown(navigation);
+//                    IndexMenuAttributeSet set = new IndexMenuAttributeSet();
 
+//                    final PopupWindow popupWindow = new PopupWindow(LayoutInflater.from(getActivity()).inflate(R.layout.menu_index,null)
+//                            , 500, 300,true);
+//                    popupWindow.setTouchable(true);
+//                    popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.layout_border));
+//                    popupWindow.showAsDropDown(etWebsite);
                     return true;
             }
             return false;
@@ -64,10 +71,35 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragView_home);
-        context = this;
-        //导航栏
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+//        //导航栏
+//        BottomNavigationView navigation =  findViewById(R.id.navigation);
+//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+    }
+
+    @Override
+    protected void initialUI() {
+        View view = findViewById(R.id.layout_menu_bar);
+        ViewGroup.LayoutParams params;
+        int width = (getWindow().getWindowManager().getDefaultDisplay().getWidth())/5;
+        Log.e("1=============1",width+"");
+        navFor = findViewById(R.id.navigation_forward);     navFor.setOnClickListener(this);
+        navBack = findViewById(R.id.navigation_backward);   navBack.setOnClickListener(this);
+        navMenu = findViewById(R.id.navigation_menu);       navMenu.setOnClickListener(this);
+        navPage = findViewById(R.id.navigation_page);       navPage.setOnClickListener(this);
+        navHome = findViewById(R.id.navigation_home);       navHome.setOnClickListener(this);
+        navFor.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        navBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        navMenu.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        navPage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        navHome.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        //
+        params = navFor.getLayoutParams();  params.width = params.height = width;
+        params = navBack.getLayoutParams();  params.width = params.height = width;
+        params = navMenu.getLayoutParams();  params.width = params.height = width;
+        params = navPage.getLayoutParams();  params.width = params.height = width;
+        params = navHome.getLayoutParams();  params.width = params.height = width;
 
     }
 
@@ -126,6 +158,19 @@ public class MainActivity extends BaseActivity
                 //TODO:退出前保存数据
                 finish();
                 System.exit(0);
+                break;
+            case R.id.navigation_forward:
+                onClickForward();
+                break;
+            case R.id.navigation_backward:
+                onClickBackward();
+                break;
+            case R.id.navigation_menu:
+                break;
+            case R.id.navigation_page:
+                break;
+            case R.id.navigation_home:
+                onClickHome();
                 break;
         }
     }

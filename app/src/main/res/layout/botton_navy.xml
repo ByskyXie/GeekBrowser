@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_bar"
+    android:orientation="horizontal"
+    android:background="@drawable/layout_border"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/navigation_backward"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/small_plus_dimen"
+        android:layout_marginEnd="@dimen/small_plus_dimen"
+        android:layout_marginTop="@dimen/small_dimen"
+        android:layout_marginBottom="@dimen/small_dimen"
+        android:background="@drawable/ic_goleft"
+        android:layout_width="1dp"
+        android:layout_height="1dp" />
+    <ImageButton
+        android:id="@+id/navigation_forward"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/small_plus_dimen"
+        android:layout_marginEnd="@dimen/small_plus_dimen"
+        android:layout_marginTop="@dimen/mini_dimen"
+        android:layout_marginBottom="@dimen/mini_dimen"
+        android:background="@drawable/ic_goright"
+        android:layout_width="10dp"
+        android:layout_height="10dp" />
+    <ImageButton
+        android:id="@+id/navigation_menu"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/small_plus_dimen"
+        android:layout_marginEnd="@dimen/small_plus_dimen"
+        android:layout_marginTop="@dimen/mini_dimen"
+        android:layout_marginBottom="@dimen/mini_dimen"
+        android:background="@drawable/ic_menu"
+        android:layout_width="10dp"
+        android:layout_height="10dp" />
+    <ImageButton
+        android:id="@+id/navigation_page"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/small_plus_dimen"
+        android:layout_marginEnd="@dimen/small_plus_dimen"
+        android:layout_marginTop="@dimen/mini_dimen"
+        android:layout_marginBottom="@dimen/mini_dimen"
+        android:background="@drawable/ic_pagewindows"
+        android:layout_width="10dp"
+        android:layout_height="10dp" />
+    <ImageButton
+        android:id="@+id/navigation_home"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/small_plus_dimen"
+        android:layout_marginEnd="@dimen/small_plus_dimen"
+        android:layout_marginTop="@dimen/mini_dimen"
+        android:layout_marginBottom="@dimen/mini_dimen"
+        android:background="@drawable/ic_home"
+        android:layout_width="10dp"
+        android:layout_height="10dp" />
+</LinearLayout>

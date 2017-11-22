@@ -10,7 +10,7 @@
         android:paddingVertical="@dimen/small_dimen"
         android:textSize="25sp"
         android:id="@+id/button_index_item"
-        android:background="@drawable/shape_button_light"
+        android:background="@drawable/shape_button_transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
