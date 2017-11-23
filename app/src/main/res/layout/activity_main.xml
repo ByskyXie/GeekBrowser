@@ -19,14 +19,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-
-<LinearLayout
-    android:id="@+id/layout_menu_bar"
-    android:layout_gravity="bottom"
-    android:layout_weight="0"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <include layout="@layout/botton_navy"/>
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_menu_bar"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/botton_navy"/>
+    </LinearLayout>
 
 </LinearLayout>

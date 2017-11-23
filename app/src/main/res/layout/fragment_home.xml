@@ -51,6 +51,7 @@
             <android.support.v7.widget.RecyclerView
                 android:background="@drawable/shape_sys_web_navy"
                 android:id="@+id/recycler_user_website"
+                android:layout_marginBottom="@dimen/mini_dimen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

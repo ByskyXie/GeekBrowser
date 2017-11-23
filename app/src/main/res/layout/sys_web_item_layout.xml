@@ -7,15 +7,17 @@
 
     <Button
         android:layout_marginTop="@dimen/small_dimen"
-        android:layout_marginHorizontal="@dimen/small_dimen"
+        android:layout_marginLeft="@dimen/small_dimen"
+        android:layout_marginRight="@dimen/small_dimen"
         android:id="@+id/button_sys_web_item"
         android:background="@drawable/shape_button_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+
     <!-- 以下的gravity可能使得布局有问题 -->
     <TextView
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:id="@+id/text_sys_web_item"

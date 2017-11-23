@@ -2,63 +2,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu_bar"
     android:orientation="horizontal"
-    android:background="@drawable/layout_border"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/navigation_backward"
+    <LinearLayout
+        android:id="@+id/layout_navigation_backward"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/shape_menu_bar"
+        android:gravity="center"
         android:layout_weight="1"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/small_plus_dimen"
-        android:layout_marginEnd="@dimen/small_plus_dimen"
-        android:layout_marginTop="@dimen/small_dimen"
-        android:layout_marginBottom="@dimen/small_dimen"
-        android:background="@drawable/ic_goleft"
-        android:layout_width="1dp"
-        android:layout_height="1dp" />
-    <ImageButton
-        android:id="@+id/navigation_forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:contentDescription="后退"
+            android:id="@+id/navigation_backward"
+            android:backgroundTint="#d0ffffff"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/small_dimen"
+            android:layout_marginBottom="@dimen/small_dimen"
+            android:background="@drawable/ic_goleft"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_navigation_forward"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/shape_menu_bar"
+        android:gravity="center"
         android:layout_weight="1"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/small_plus_dimen"
-        android:layout_marginEnd="@dimen/small_plus_dimen"
-        android:layout_marginTop="@dimen/mini_dimen"
-        android:layout_marginBottom="@dimen/mini_dimen"
-        android:background="@drawable/ic_goright"
-        android:layout_width="10dp"
-        android:layout_height="10dp" />
-    <ImageButton
-        android:id="@+id/navigation_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:contentDescription="前进"
+            android:id="@+id/navigation_forward"
+            android:backgroundTint="#d0ffffff"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/small_dimen"
+            android:layout_marginBottom="@dimen/small_dimen"
+            android:background="@drawable/ic_goright"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_navigation_menu"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/shape_menu_bar"
+        android:gravity="center"
         android:layout_weight="1"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/small_plus_dimen"
-        android:layout_marginEnd="@dimen/small_plus_dimen"
-        android:layout_marginTop="@dimen/mini_dimen"
-        android:layout_marginBottom="@dimen/mini_dimen"
-        android:background="@drawable/ic_menu"
-        android:layout_width="10dp"
-        android:layout_height="10dp" />
-    <ImageButton
-        android:id="@+id/navigation_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:contentDescription="菜单"
+            android:id="@+id/navigation_menu"
+            android:backgroundTint="#d0ffffff"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/small_dimen"
+            android:layout_marginBottom="@dimen/small_dimen"
+            android:background="@drawable/ic_menu"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_navigation_page"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/shape_menu_bar"
+        android:gravity="center"
         android:layout_weight="1"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/small_plus_dimen"
-        android:layout_marginEnd="@dimen/small_plus_dimen"
-        android:layout_marginTop="@dimen/mini_dimen"
-        android:layout_marginBottom="@dimen/mini_dimen"
-        android:background="@drawable/ic_pagewindows"
-        android:layout_width="10dp"
-        android:layout_height="10dp" />
-    <ImageButton
-        android:id="@+id/navigation_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:contentDescription="标签"
+            android:id="@+id/navigation_page"
+            android:backgroundTint="#d0ffffff"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/small_dimen"
+            android:layout_marginBottom="@dimen/small_dimen"
+            android:background="@drawable/ic_pagewindows"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_navigation_home"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/shape_menu_bar"
+        android:gravity="center"
         android:layout_weight="1"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/small_plus_dimen"
-        android:layout_marginEnd="@dimen/small_plus_dimen"
-        android:layout_marginTop="@dimen/mini_dimen"
-        android:layout_marginBottom="@dimen/mini_dimen"
-        android:background="@drawable/ic_home"
-        android:layout_width="10dp"
-        android:layout_height="10dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:contentDescription="主页"
+            android:id="@+id/navigation_home"
+            android:backgroundTint="#d0ffffff"
+            android:clickable="false"
+            android:focusable="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/small_dimen"
+            android:layout_marginBottom="@dimen/small_dimen"
+            android:background="@drawable/ic_home"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+
 </LinearLayout>

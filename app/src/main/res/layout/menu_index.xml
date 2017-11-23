@@ -2,19 +2,63 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_margin="@dimen/small_dimen"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
-        android:text="设置"
-        android:background="@drawable/layout_border"
+    <ImageView
+        android:layout_weight="1"
+        android:background="#40000000"
+        android:id="@+id/index_menu_outside"
+        android:contentDescription="outside"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:text="退出"
-        android:layout_marginTop="@dimen/small_dimen"
-        android:background="@drawable/layout_border"
+        android:layout_height="10dp" />
+
+    <LinearLayout
+        android:layout_weight="0"
+        android:id="@+id/index_menu_inside"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <Button
+            android:text="设置"
+            android:layout_marginLeft="@dimen/small_dimen"
+            android:layout_marginRight="@dimen/small_dimen"
+            android:layout_marginTop="@dimen/small_dimen"
+            android:background="@drawable/layout_border"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:text="退出"
+            android:layout_marginLeft="@dimen/small_dimen"
+            android:layout_marginRight="@dimen/small_dimen"
+            android:layout_marginTop="@dimen/small_dimen"
+            android:layout_marginBottom="@dimen/small_dimen"
+            android:background="@drawable/layout_border"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/layout_index_menu_drop"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/shape_menu_bar"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/index_menu_drop"
+                android:contentDescription="返回"
+                android:backgroundTint="#d0ffffff"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/small_dimen"
+                android:layout_marginBottom="@dimen/small_dimen"
+                android:background="@drawable/ic_drop"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

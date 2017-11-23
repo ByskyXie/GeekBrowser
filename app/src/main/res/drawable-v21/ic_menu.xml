@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorGrayBlue">
+    <item >
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+
+            android:width="1024dp"
+            android:height="1024dp"
+            android:viewportWidth="1024"
+            android:viewportHeight="1024">
+
+
+            <path
+                android:fillColor="#2c2c2c"
+                android:pathData="M984.576 998.4H39.424c-21.504 0-39.424-16.896-39.424-38.4s17.408-38.4
+                39.424-38.4h945.152c21.504 0 39.424 16.896 39.424 38.4s-17.408 38.4-39.424
+                38.4zM984.576 721.92H39.424c-21.504 0-39.424-16.896-39.424-38.4s17.408-38.4
+                39.424-38.4h945.152c21.504 0 39.424 16.896 39.424 38.4s-17.408 38.4-39.424
+                38.4zM984.576 445.44H39.424C17.408 445.44 0 428.544 0 407.04S17.408 368.64
+                39.424 368.64h945.152c21.504 0 39.424 16.896 39.424 38.4s-17.408 38.4-39.424
+                38.4zM382.464 141.312L484.352 39.424c15.36-15.36 40.448-15.36 55.808 0l101.888
+                101.888c24.576 24.576 7.168 67.072-27.648 67.072H410.112c-34.816
+                0-52.736-42.496-27.648-67.072z" />
+        </vector>
+    </item>
+
+</ripple>

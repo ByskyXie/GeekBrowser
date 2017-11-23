@@ -1,106 +1,94 @@
 package com.jxnu.cure.geekbrowser;
 
-
 import android.app.Dialog;
-import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
-
-import java.util.zip.Inflater;
+import android.widget.Toast;
 
 public class MainActivity extends BaseActivity
-        implements HomeFragment.OnFragmentInteractionListener, View.OnClickListener {
+        implements HomeFragment.OnFragmentInteractionListener, View.OnClickListener{
     private HomeFragment homeFragment;
     private Dialog exitDialog;
+    private PopupWindow popupWindow;
+    private View indexMenu;
     private ImageButton navFor,navBack,navMenu,navPage,navHome;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    onClickHome();
-                    return true;
-                case R.id.navigation_backward:
-                    onClickBackward();
-                    return true;
-                case R.id.navigation_forward:
-                    onClickForward();
-                    return true;
-                case R.id.navigation_menu:
-//                    PopupMenu popupMenu = new PopupMenu( context,navigation);
-//                    popupMenu.getMenuInflater().inflate(R.menu.navigation,popupMenu.getMenu());
-////                    popupMenu.setOnMenuItemClickListener();
-//                    popupMenu.show();
-//                    IndexMenuAttributeSet set = new IndexMenuAttributeSet();
-
-//                    final PopupWindow popupWindow = new PopupWindow(LayoutInflater.from(getActivity()).inflate(R.layout.menu_index,null)
-//                            , 500, 300,true);
-//                    popupWindow.setTouchable(true);
-//                    popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.layout_border));
-//                    popupWindow.showAsDropDown(etWebsite);
-                    return true;
-            }
-            return false;
-        }
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragView_home);
-
-//        //导航栏
-//        BottomNavigationView navigation =  findViewById(R.id.navigation);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        initialUI();
 
     }
 
     @Override
     protected void initialUI() {
-        View view = findViewById(R.id.layout_menu_bar);
-        ViewGroup.LayoutParams params;
-        int width = (getWindow().getWindowManager().getDefaultDisplay().getWidth())/5;
-        Log.e("1=============1",width+"");
-        navFor = findViewById(R.id.navigation_forward);     navFor.setOnClickListener(this);
-        navBack = findViewById(R.id.navigation_backward);   navBack.setOnClickListener(this);
-        navMenu = findViewById(R.id.navigation_menu);       navMenu.setOnClickListener(this);
-        navPage = findViewById(R.id.navigation_page);       navPage.setOnClickListener(this);
-        navHome = findViewById(R.id.navigation_home);       navHome.setOnClickListener(this);
+        LayoutParams params;
+        //宽度
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int iconWH = width/13;
+        int margin = (int)((1.0*width-iconWH*5) / (2*5));
+        navFor = findViewById(R.id.navigation_forward);
+        navBack = findViewById(R.id.navigation_backward);
+        navMenu = findViewById(R.id.navigation_menu);
+        navPage = findViewById(R.id.navigation_page);
+        navHome = findViewById(R.id.navigation_home);
+        //点击事件
+        findViewById(R.id.layout_navigation_backward).setOnClickListener(this);
+        findViewById(R.id.layout_navigation_forward).setOnClickListener(this);
+        findViewById(R.id.layout_navigation_menu).setOnClickListener(this);
+        findViewById(R.id.layout_navigation_page).setOnClickListener(this);
+        findViewById(R.id.layout_navigation_home).setOnClickListener(this);
+        //设置长宽 & 图标对齐 & margin
+        params = (LayoutParams) navFor.getLayoutParams();  params.width = params.height = iconWH;
+        params.leftMargin = params.rightMargin = margin;
+        params = (LayoutParams)navBack.getLayoutParams();  params.width = params.height = iconWH;
+        params.leftMargin = params.rightMargin = margin;
+        params = (LayoutParams)navMenu.getLayoutParams();  params.width = params.height = iconWH;
+        params.leftMargin = params.rightMargin = margin;
+        params = (LayoutParams)navPage.getLayoutParams();  params.width = params.height = iconWH;
+        params.leftMargin = params.rightMargin = margin;
+        params = (LayoutParams)navHome.getLayoutParams();  params.width = params.height = iconWH;
+        params.leftMargin = params.rightMargin = margin;
         navFor.setScaleType(ImageView.ScaleType.FIT_CENTER);
         navBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
         navMenu.setScaleType(ImageView.ScaleType.FIT_CENTER);
         navPage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         navHome.setScaleType(ImageView.ScaleType.FIT_CENTER);
         //
-        params = navFor.getLayoutParams();  params.width = params.height = width;
-        params = navBack.getLayoutParams();  params.width = params.height = width;
-        params = navMenu.getLayoutParams();  params.width = params.height = width;
-        params = navPage.getLayoutParams();  params.width = params.height = width;
-        params = navHome.getLayoutParams();  params.width = params.height = width;
+        indexMenu = LayoutInflater.from(this).inflate(R.layout.menu_index,null);
+        indexMenu.findViewById(R.id.index_menu_outside).setOnClickListener(this);
+        indexMenu.findViewById(R.id.layout_index_menu_drop).setOnClickListener(this);
+        params = (LayoutParams) indexMenu.findViewById(R.id.index_menu_drop).getLayoutParams();
+        params.width = params.height = iconWH;
+//        Toast.makeText(this,"",Toast.LENGTH_SHORT).show();
+        popupWindow = new PopupWindow( indexMenu,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT,true);
+        indexMenu.findViewById(R.id.index_menu_outside).getLayoutParams().height = height;
+        popupWindow.setTouchable(true);
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(popupWindow.isShowing()){
+            popupWindow.dismiss();
+            return true;
+        }
+        return super.onTouchEvent(event);
     }
 
     /**
@@ -108,7 +96,9 @@ public class MainActivity extends BaseActivity
      **/
     @Override
     public void onBackPressed() {
-        if (homeFragment.canBack())
+        if(popupWindow.isShowing())
+            popupWindow.dismiss();
+        else if (homeFragment.canBack())
             onClickBackward();
         else
             showExitDialog();
@@ -159,18 +149,27 @@ public class MainActivity extends BaseActivity
                 finish();
                 System.exit(0);
                 break;
-            case R.id.navigation_forward:
+            case R.id.layout_navigation_forward:
                 onClickForward();
                 break;
-            case R.id.navigation_backward:
+            case R.id.layout_navigation_backward:
                 onClickBackward();
                 break;
-            case R.id.navigation_menu:
+            case R.id.layout_navigation_menu:
+                popupWindow.showAtLocation(navMenu,Gravity.BOTTOM,0,
+                        findViewById(R.id.layout_navigation_backward).getHeight());
                 break;
-            case R.id.navigation_page:
+            case R.id.layout_navigation_page:
                 break;
-            case R.id.navigation_home:
+            case R.id.layout_navigation_home:
                 onClickHome();
+                break;
+            //
+            case R.id.index_menu_outside:
+                popupWindow.dismiss();
+                break;
+            case R.id.layout_index_menu_drop:
+                popupWindow.dismiss();
                 break;
         }
     }
