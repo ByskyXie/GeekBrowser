@@ -41,4 +41,9 @@
         <item name = "android:windowAnimationStyle">@style/DialogAnim</item>
     </style>
 
+    <style name="anim_menu" parent="AppTheme">
+        <item name="android:windowEnterAnimation">@anim/menu_in</item>
+        <item name="android:windowExitAnimation">@anim/menu_out</item>
+    </style>
+
 </resources>

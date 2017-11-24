@@ -188,7 +188,9 @@ public class HomeFragment extends Fragment
         if(net.equals("http://"))
             return;
         //处理后网址不为空，即只有"http://"
+        //展示载入动画
         webView.loadUrl(net);
+        //结束动画
         webView.setWebViewClient(myClient);
         changeVisible(SHOW_WEB);
     }
@@ -255,6 +257,11 @@ public class HomeFragment extends Fragment
             webView_home.setVisibility(View.VISIBLE);
         }
     }
+    public boolean isIndexVisible(){
+        if(web_navy.getVisibility()==View.VISIBLE )
+            return true;
+        return false;
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -273,14 +280,17 @@ public class HomeFragment extends Fragment
         void onClickHome();
     }
     public void backPage(){
-        if(webView_home.canGoBack())
-            webView_home.goBack();
-        else
+        if(webView_home.canGoBack()){
+            if(isIndexVisible())
+                changeVisible(SHOW_WEB);
+            else
+                webView_home.goBack();
+        }else
             changeVisible(SHOW_INDEX);
     }
     public void forPage(){
         if(webView_home.canGoForward()){
-            if(web_navy.getVisibility() == View.VISIBLE)
+            if(isIndexVisible())
                 changeVisible(SHOW_WEB);
             else
                 webView_home.goForward();

@@ -4,19 +4,20 @@ import android.app.Dialog;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 public class MainActivity extends BaseActivity
         implements HomeFragment.OnFragmentInteractionListener, View.OnClickListener{
@@ -76,17 +77,17 @@ public class MainActivity extends BaseActivity
         indexMenu.findViewById(R.id.layout_index_menu_drop).setOnClickListener(this);
         params = (LayoutParams) indexMenu.findViewById(R.id.index_menu_drop).getLayoutParams();
         params.width = params.height = iconWH;
-//        Toast.makeText(this,"",Toast.LENGTH_SHORT).show();
         popupWindow = new PopupWindow( indexMenu,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT,true);
         indexMenu.findViewById(R.id.index_menu_outside).getLayoutParams().height = height;
+        popupWindow.setAnimationStyle(R.style.anim_menu);
         popupWindow.setTouchable(true);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(popupWindow.isShowing()){
-            popupWindow.dismiss();
-            return true;
+        switch (event.getActionMasked()){
+            case MotionEvent.ACTION_BUTTON_PRESS:
+                break;
         }
         return super.onTouchEvent(event);
     }
@@ -140,6 +141,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onClick(View view) {
+        WindowManager.LayoutParams attr;
         switch (view.getId()) {
             case R.id.button_exit_cancel:
                 exitDialog.cancel();
@@ -156,6 +158,8 @@ public class MainActivity extends BaseActivity
                 onClickBackward();
                 break;
             case R.id.layout_navigation_menu:
+                attr = getWindow().getAttributes();  attr.alpha = 0.8f;
+                getWindow().setAttributes(attr);
                 popupWindow.showAtLocation(navMenu,Gravity.BOTTOM,0,
                         findViewById(R.id.layout_navigation_backward).getHeight());
                 break;
@@ -167,8 +171,12 @@ public class MainActivity extends BaseActivity
             //
             case R.id.index_menu_outside:
                 popupWindow.dismiss();
+                attr = getWindow().getAttributes();  attr.alpha = 1f;
+                getWindow().setAttributes(attr);
                 break;
             case R.id.layout_index_menu_drop:
+                attr = getWindow().getAttributes();  attr.alpha = 1f;
+                getWindow().setAttributes(attr);
                 popupWindow.dismiss();
                 break;
         }
