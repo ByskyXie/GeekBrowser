@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
+        <shape>
+            <solid android:color="@color/menuBarGray"/>
+        </shape>
+    </item>
 
-    <solid android:color="#6B6B6B" />
-
-    <padding
-        android:bottom="1dp"
-        android:left="0.5dp"
-        android:right="0.5dp"
-        android:top="0dp" />
-
-</shape>
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/menuBarGrayPressed"/>
+        </shape>
+    </item>
+</selector>

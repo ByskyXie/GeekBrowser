@@ -5,10 +5,14 @@
     <string name="title_notifications">Notifications</string>
     <string name="hint_website">Input website</string>
 
-    <string name="title_backward">Backward</string>
-    <string name="title_menu">Menu</string>
-    <string name="title_forward">Forward</string>
-    <string name="title_setting">Setting</string>
+    <string name="menu_keep">收藏</string>
+    <string name="menu_bookmark">书签</string>
+    <string name="menu_download">下载</string>
+    <string name="menu_renovate">刷新</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_setting">设置</string>
+    <string name="menu_exit">退出</string>
 
     <string name="hint_for_exit">你确定要退出吗？</string>
     <string name="text_cancel">取消</string>

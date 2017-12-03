@@ -13,6 +13,9 @@
     <color name="gray">#C0C0C0</color>
     <color name="coldGray">#808A87</color>
 
+    <color name="menuBarGray">#6B6B6B</color>
+    <color name="menuBarGrayPressed">#7B7B7B</color>
+
     <color name="fullTransparent">#00000000</color>
     <color name="level_1_Transparent">#20000000</color>
     <color name="level_2_Transparent">#40000000</color>

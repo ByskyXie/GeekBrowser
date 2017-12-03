@@ -52,7 +52,7 @@ public class RecyclerSysWebAdapter extends RecyclerView.Adapter<RecyclerSysWebAd
     }
 
     @Override
-    public void onBindViewHolder(SysWebHolder holder, final int position) {
+    public void onBindViewHolder(final SysWebHolder holder, final int position) {
         IndexItem item = list.get(position);
         holder.indexItem = item;
         holder.textView.setText(item.getText());
@@ -69,7 +69,7 @@ public class RecyclerSysWebAdapter extends RecyclerView.Adapter<RecyclerSysWebAd
         holder.button_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(position,list);
+                listener.onClick(holder.getAdapterPosition(),list);
             }
         });
     }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Layout;
 import android.transition.Fade;
 import android.transition.Slide;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,6 +79,7 @@ public class MainActivity extends BaseActivity
         indexMenu.findViewById(R.id.layout_index_menu_drop).setOnClickListener(this);
         params = (LayoutParams) indexMenu.findViewById(R.id.index_menu_drop).getLayoutParams();
         params.width = params.height = iconWH;
+        //
         popupWindow = new PopupWindow( indexMenu,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT,true);
         indexMenu.findViewById(R.id.index_menu_outside).getLayoutParams().height = height;
         popupWindow.setAnimationStyle(R.style.anim_menu);

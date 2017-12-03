@@ -52,7 +52,7 @@ public class RecyclerIndexAdapter extends RecyclerView.Adapter<RecyclerIndexAdap
     }
 
     @Override
-    public void onBindViewHolder(IndexHolder holder, final int position) {
+    public void onBindViewHolder(final IndexHolder holder, final int position) {
         IndexItem item = item_list.get(position);
         holder.indexItem = item;
         holder.indexItem = item;
@@ -70,7 +70,7 @@ public class RecyclerIndexAdapter extends RecyclerView.Adapter<RecyclerIndexAdap
         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onClick(position,item_list);
+                onItemClickListener.onClick(holder.getAdapterPosition(),item_list);
             }
         });
     }
