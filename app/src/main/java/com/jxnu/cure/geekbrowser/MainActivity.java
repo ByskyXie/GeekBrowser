@@ -77,6 +77,16 @@ public class MainActivity extends BaseActivity
         indexMenu = LayoutInflater.from(this).inflate(R.layout.menu_index,null);
         indexMenu.findViewById(R.id.index_menu_outside).setOnClickListener(this);
         indexMenu.findViewById(R.id.layout_index_menu_drop).setOnClickListener(this);
+        //调整矢量图尺寸
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_keep)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_bookmark)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_download)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_renovate)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_share)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_about)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_setting)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_exit)).setBackgroundSize(1,iconWH,iconWH);
+        //
         params = (LayoutParams) indexMenu.findViewById(R.id.index_menu_drop).getLayoutParams();
         params.width = params.height = iconWH;
         //
@@ -161,7 +171,7 @@ public class MainActivity extends BaseActivity
                 onClickBackward();
                 break;
             case R.id.layout_navigation_menu:
-                attr = getWindow().getAttributes();  attr.alpha = 0.8f;
+                attr = getWindow().getAttributes();  attr.alpha = 0.7f;
                 getWindow().setAttributes(attr);
                 popupWindow.showAtLocation(navMenu,Gravity.BOTTOM,0,
                         findViewById(R.id.layout_navigation_backward).getHeight());
