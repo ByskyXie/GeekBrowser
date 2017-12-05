@@ -1,41 +1,41 @@
 package com.jxnu.cure.geekbrowser;
 
 import android.app.Dialog;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
 
+import java.util.ArrayList;
+
 public class MainActivity extends BaseActivity
-        implements HomeFragment.OnFragmentInteractionListener, View.OnClickListener{
-    private HomeFragment homeFragment;
+        implements PageFragment.OnFragmentInteractionListener, View.OnClickListener {
+    private ImageButton navFor, navBack, navMenu, navPage, navHome;
     private Dialog exitDialog;
     private PopupWindow popupWindow;
     private View indexMenu;
-    private ImageButton navFor,navBack,navMenu,navPage,navHome;
+    private int iconWH;
+    //页面集合
+    private ArrayList<PageFragment> pageFragmentArrayList = new ArrayList<PageFragment>();
+    private int currentPageNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.fragView_home);
+        currentPageNum = 0;
+        pageFragmentArrayList.add(
+                (PageFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_page));
         initialUI();
-
     }
 
     @Override
@@ -43,9 +43,8 @@ public class MainActivity extends BaseActivity
         LayoutParams params;
         //宽度
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        int iconWH = width/13;
-        int margin = (int)((1.0*width-iconWH*5) / (2*5));
+        iconWH = width / 13;
+        int margin = (int) ((1.0 * width - iconWH * 5) / (2 * 5));
         navFor = findViewById(R.id.navigation_forward);
         navBack = findViewById(R.id.navigation_backward);
         navMenu = findViewById(R.id.navigation_menu);
@@ -58,15 +57,20 @@ public class MainActivity extends BaseActivity
         findViewById(R.id.layout_navigation_page).setOnClickListener(this);
         findViewById(R.id.layout_navigation_home).setOnClickListener(this);
         //设置长宽 & 图标对齐 & margin
-        params = (LayoutParams) navFor.getLayoutParams();  params.width = params.height = iconWH;
+        params = (LayoutParams) navFor.getLayoutParams();
+        params.width = params.height = iconWH;
         params.leftMargin = params.rightMargin = margin;
-        params = (LayoutParams)navBack.getLayoutParams();  params.width = params.height = iconWH;
+        params = (LayoutParams) navBack.getLayoutParams();
+        params.width = params.height = iconWH;
         params.leftMargin = params.rightMargin = margin;
-        params = (LayoutParams)navMenu.getLayoutParams();  params.width = params.height = iconWH;
+        params = (LayoutParams) navMenu.getLayoutParams();
+        params.width = params.height = iconWH;
         params.leftMargin = params.rightMargin = margin;
-        params = (LayoutParams)navPage.getLayoutParams();  params.width = params.height = iconWH;
+        params = (LayoutParams) navPage.getLayoutParams();
+        params.width = params.height = iconWH;
         params.leftMargin = params.rightMargin = margin;
-        params = (LayoutParams)navHome.getLayoutParams();  params.width = params.height = iconWH;
+        params = (LayoutParams) navHome.getLayoutParams();
+        params.width = params.height = iconWH;
         params.leftMargin = params.rightMargin = margin;
         navFor.setScaleType(ImageView.ScaleType.FIT_CENTER);
         navBack.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -74,31 +78,46 @@ public class MainActivity extends BaseActivity
         navPage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         navHome.setScaleType(ImageView.ScaleType.FIT_CENTER);
         //
-        indexMenu = LayoutInflater.from(this).inflate(R.layout.menu_index,null);
+        initialMenu();
+    }
+
+    protected void initialMenu() {
+
+        indexMenu = LayoutInflater.from(this).inflate(R.layout.menu_index, null);
         indexMenu.findViewById(R.id.index_menu_outside).setOnClickListener(this);
         indexMenu.findViewById(R.id.layout_index_menu_drop).setOnClickListener(this);
         //调整矢量图尺寸
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_keep)).setBackgroundSize(1,iconWH,iconWH);
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_bookmark)).setBackgroundSize(1,iconWH,iconWH);
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_download)).setBackgroundSize(1,iconWH,iconWH);
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_renovate)).setBackgroundSize(1,iconWH,iconWH);
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_share)).setBackgroundSize(1,iconWH,iconWH);
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_about)).setBackgroundSize(1,iconWH,iconWH);
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_setting)).setBackgroundSize(1,iconWH,iconWH);
-        ((AdjustDrawButton)indexMenu.findViewById(R.id.button_menu_exit)).setBackgroundSize(1,iconWH,iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_keep)).setBackgroundSize(1, iconWH, iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_bookmark)).setBackgroundSize(1, iconWH, iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_download)).setBackgroundSize(1, iconWH, iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_renovate)).setBackgroundSize(1, iconWH, iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_share)).setBackgroundSize(1, iconWH, iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_about)).setBackgroundSize(1, iconWH, iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_setting)).setBackgroundSize(1, iconWH, iconWH);
+        ((AdjustDrawButton) indexMenu.findViewById(R.id.button_menu_exit)).setBackgroundSize(1, iconWH, iconWH);
+        //监听器
+        indexMenu.findViewById(R.id.button_menu_keep).setOnClickListener(this);
+        indexMenu.findViewById(R.id.button_menu_bookmark).setOnClickListener(this);
+        indexMenu.findViewById(R.id.button_menu_download).setOnClickListener(this);
+        indexMenu.findViewById(R.id.button_menu_renovate).setOnClickListener(this);
+        indexMenu.findViewById(R.id.button_menu_share).setOnClickListener(this);
+        indexMenu.findViewById(R.id.button_menu_about).setOnClickListener(this);
+        indexMenu.findViewById(R.id.button_menu_setting).setOnClickListener(this);
+        indexMenu.findViewById(R.id.button_menu_exit).setOnClickListener(this);
         //
-        params = (LayoutParams) indexMenu.findViewById(R.id.index_menu_drop).getLayoutParams();
+        LayoutParams params = (LayoutParams) indexMenu.findViewById(R.id.index_menu_drop).getLayoutParams();
         params.width = params.height = iconWH;
         //
-        popupWindow = new PopupWindow( indexMenu,LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT,true);
-        indexMenu.findViewById(R.id.index_menu_outside).getLayoutParams().height = height;
+        popupWindow = new PopupWindow(indexMenu, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
+        indexMenu.findViewById(R.id.index_menu_outside).getLayoutParams().height =
+                getResources().getDisplayMetrics().heightPixels;
         popupWindow.setAnimationStyle(R.style.anim_menu);
         popupWindow.setTouchable(true);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getActionMasked()){
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_BUTTON_PRESS:
                 break;
         }
@@ -110,10 +129,10 @@ public class MainActivity extends BaseActivity
      **/
     @Override
     public void onBackPressed() {
-        if(popupWindow.isShowing())
+        if (popupWindow.isShowing())
             popupWindow.dismiss();
-        else if (homeFragment.canBack())
-            onClickBackward();
+        else if (pageFragmentArrayList.get(currentPageNum).canBack())
+            pageFragmentArrayList.get(currentPageNum).backPage();
         else
             showExitDialog();
         //super.onBackPressed();
@@ -165,15 +184,18 @@ public class MainActivity extends BaseActivity
                 System.exit(0);
                 break;
             case R.id.layout_navigation_forward:
-                onClickForward();
+                pageFragmentArrayList.get(currentPageNum)
+                        .forPage();
                 break;
             case R.id.layout_navigation_backward:
-                onClickBackward();
+                pageFragmentArrayList.get(currentPageNum)
+                        .backPage();
                 break;
             case R.id.layout_navigation_menu:
-                attr = getWindow().getAttributes();  attr.alpha = 0.7f;
+                attr = getWindow().getAttributes();
+                attr.alpha = 0.7f;
                 getWindow().setAttributes(attr);
-                popupWindow.showAtLocation(navMenu,Gravity.BOTTOM,0,
+                popupWindow.showAtLocation(navMenu, Gravity.BOTTOM, 0,
                         findViewById(R.id.layout_navigation_backward).getHeight());
                 break;
             case R.id.layout_navigation_page:
@@ -181,16 +203,44 @@ public class MainActivity extends BaseActivity
             case R.id.layout_navigation_home:
                 onClickHome();
                 break;
-            //
+            //以下为菜单选项处理
             case R.id.index_menu_outside:
                 popupWindow.dismiss();
-                attr = getWindow().getAttributes();  attr.alpha = 1f;
+                attr = getWindow().getAttributes();
+                attr.alpha = 1f;
                 getWindow().setAttributes(attr);
                 break;
             case R.id.layout_index_menu_drop:
-                attr = getWindow().getAttributes();  attr.alpha = 1f;
+                attr = getWindow().getAttributes();
+                attr.alpha = 1f;
                 getWindow().setAttributes(attr);
                 popupWindow.dismiss();
+                break;
+            case R.id.button_menu_keep:
+
+                break;
+            case R.id.button_menu_bookmark:
+
+                break;
+            case R.id.button_menu_download:
+
+                break;
+            case R.id.button_menu_renovate:
+
+                break;
+            case R.id.button_menu_share:
+
+                break;
+            case R.id.button_menu_about:
+
+                break;
+            case R.id.button_menu_setting:
+
+                break;
+            case R.id.button_menu_exit:
+                //TODO:退出前保存数据
+                finish();
+                System.exit(0);
                 break;
         }
     }
@@ -201,15 +251,9 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onClickHome() {  homeFragment.changeVisible(HomeFragment.SHOW_INDEX);}
-
-    @Override
-    public void onClickBackward() {
-        homeFragment.backPage();
+    public void onClickHome() {
+        pageFragmentArrayList.get(currentPageNum)
+                .changeVisible(PageFragment.SHOW_INDEX);
     }
 
-    @Override
-    public void onClickForward() {
-        homeFragment.forPage();
-    }
 }

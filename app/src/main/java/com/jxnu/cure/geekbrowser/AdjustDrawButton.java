@@ -38,4 +38,11 @@ public class AdjustDrawButton extends AppCompatButton{
         drawables[direction] = drawable;
         super.setCompoundDrawables(drawables[0],drawables[1],drawables[2],drawables[3]);
     }
+
+    protected void setDrawCloseCenter(int direction){
+        Drawable[] drawables = getCompoundDrawables();
+        if(drawables[direction] == null)
+            return;
+//        drawables[direction].get
+    }
 }

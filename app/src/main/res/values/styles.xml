@@ -10,10 +10,9 @@
 
     <!-- Basic theme -->
     <style name="NewTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
         <item name="colorPrimary">@color/colorGrayBlue</item>
         <item name="colorPrimaryDark">@color/colorDarkGrayBlue</item>
-        <item name="colorAccent">@color/colorGold</item>
+        <item name="colorAccent">@color/deepSkyBlue</item>
     </style>
 
     <!-- Emerge and  Disappear Dialog-->
@@ -44,6 +43,10 @@
     <style name="anim_menu" parent="AppTheme">
         <item name="android:windowEnterAnimation">@anim/menu_in</item>
         <item name="android:windowExitAnimation">@anim/menu_out</item>
+    </style>
+
+    <style name="ButtonNoShadow" parent="@style/Widget.AppCompat.Button.Borderless">
+
     </style>
 
 </resources>

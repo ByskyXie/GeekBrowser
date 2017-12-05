@@ -1,0 +1,70 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_inputWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mini_dimen"
+            android:background="@drawable/layout_border"
+            android:paddingHorizontal="@dimen/small_plus_dimen">
+
+            <EditText
+                android:id="@+id/editText_website"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:hint="@string/hint_website"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+            <com.jxnu.cure.geekbrowser.AdjustDrawButton
+                android:id="@+id/button_connect"
+                style="@style/ButtonNoShadow"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:drawableRight="@drawable/ic_connect"
+                android:text="前往"
+                android:tint="@color/iconGray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_web_navy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/mini_dimen"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_sys_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/mini_dimen"
+                android:background="@drawable/shape_sys_web_navy"
+                android:paddingHorizontal="@dimen/mini_dimen" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_user_website"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/mini_dimen"
+                android:background="@drawable/shape_sys_web_navy" />
+
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/webview_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</FrameLayout>

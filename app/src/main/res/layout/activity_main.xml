@@ -10,8 +10,8 @@
     android:orientation="vertical"
     tools:context="com.jxnu.cure.geekbrowser.MainActivity">
     <fragment
-        android:id="@+id/fragView_home"
-        android:name="com.jxnu.cure.geekbrowser.HomeFragment"
+        android:id="@+id/fragment_page"
+        android:name="com.jxnu.cure.geekbrowser.PageFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

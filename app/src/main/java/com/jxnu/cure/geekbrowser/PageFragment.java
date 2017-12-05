@@ -3,27 +3,26 @@ package com.jxnu.cure.geekbrowser;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,12 +32,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
+ * {@link PageFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link PageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment
+public class PageFragment extends Fragment
     implements View.OnClickListener{
     final static int SHOW_INDEX = 0;
     final static int SHOW_WEB = 1;
@@ -47,13 +46,13 @@ public class HomeFragment extends Fragment
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private FragWebClient myClient; //网址代理
+    private FragmentWebClient myClient; //网址代理
     private WebSettings webSettings;//网页显示的设置
     private EditText etWebsite;    //网址输入框
-    private WebView webView_home;   //网页显示控件
-    private ImageButton imgButton;  //确定键
-
+    private WebView pageWebView;   //网页显示控件
+    private Button connectButton;  //确定键
     private LinearLayout web_navy;
+    private int iconWH;
     //本地网页
     private RecyclerView recycler_sys;
     private ArrayList<IndexItem> item_list_sys;
@@ -69,12 +68,12 @@ public class HomeFragment extends Fragment
 
     private OnFragmentInteractionListener mListener;
 
-    class FragWebClient extends WebViewClient{
+    class FragmentWebClient extends WebViewClient{
         ///用于防止调用其它浏览器打开Url
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            if(webView_home!=null)
-                webView_home.loadUrl(temp);
+            if(pageWebView!=null)
+                pageWebView.loadUrl(temp);
             return true;
         }
 
@@ -84,7 +83,7 @@ public class HomeFragment extends Fragment
             //TODO：执行去广告操作
         }
     }
-    public HomeFragment() {
+    public PageFragment() {
         // Required empty public constructor
     }
 
@@ -97,8 +96,8 @@ public class HomeFragment extends Fragment
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static PageFragment newInstance(String param1, String param2) {
+        PageFragment fragment = new PageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -109,9 +108,9 @@ public class HomeFragment extends Fragment
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.img_commit:
+            case R.id.button_connect:
                 temp = etWebsite.getText().toString();
-                loadURL(temp,webView_home);
+                loadURL(temp,pageWebView);
                 break;
             case R.id.editText_website:
 
@@ -122,7 +121,7 @@ public class HomeFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myClient = new FragWebClient();
+        myClient = new FragmentWebClient();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -133,7 +132,13 @@ public class HomeFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_page, container, false);
+        Button button = view.findViewById(R.id.button_connect);
+        Drawable[] draws = button.getCompoundDrawables();
+        iconWH = (getResources().getDisplayMetrics().widthPixels/13);
+        draws[2].setBounds(0,0,iconWH*2,iconWH*2);
+        button.setCompoundDrawables(draws[0],draws[1],draws[2],draws[3]);
+        return view;
     }
 
     @Override
@@ -148,7 +153,7 @@ public class HomeFragment extends Fragment
             public void onClick(int position, ArrayList<IndexItem> list) {
                 //点击事件加载对应URI
                 IndexItem item = list.get(position);
-                loadURL(item.getLink().toString(),webView_home);
+                loadURL(item.getLink().toString(),pageWebView);
             }
         };
         int sys_column = 7;
@@ -165,7 +170,7 @@ public class HomeFragment extends Fragment
             public void onClick(int position,  ArrayList<IndexItem> itemList) {
                 //点击事件加载对应URI
                 IndexItem item = itemList.get(position);
-                loadURL(item.getLink().toString(),webView_home);
+                loadURL(item.getLink().toString(),pageWebView);
             }
         };
         item_list_user = getItemListFromDatabase("USER_WEBSITE");
@@ -175,20 +180,21 @@ public class HomeFragment extends Fragment
         recycler_user.setAdapter( new RecyclerIndexAdapter(getContext(),item_list_user,onItemClickListener_user,glm_user));
 
         //显示网页布局及输入框的初始化
-        webView_home = act.findViewById(R.id.webView_home);     webView_home.setVisibility(View.GONE);//一开始不显示加载网页
+        pageWebView = act.findViewById(R.id.webview_page);     pageWebView.setVisibility(View.GONE);//一开始不显示加载网页
         etWebsite =  act.findViewById(R.id.editText_website);  etWebsite.setOnClickListener(this);
-        imgButton = act.findViewById(R.id.img_commit);          imgButton.setOnClickListener(this);
-        webSettings = webView_home.getSettings();               webSettings.setJavaScriptEnabled(true);
+        connectButton = act.findViewById(R.id.button_connect);          connectButton.setOnClickListener(this);
+        webSettings = pageWebView.getSettings();
+        //TODO:防范脚本攻击
+        webSettings.setJavaScriptEnabled(true);
     }
 
     public void loadURL(String net,WebView webView){
-        //指定webview加载对应URL，并设置可见
-        if(net.length()<7||!net.substring(0,7).equals("http://"))
-            net = "http://" + net;
-        if(net.equals("http://"))
+        if(net.length() == 0 || net.matches("[ \n\r\f\t]*"))
             return;
-        //处理后网址不为空，即只有"http://"
-        //展示载入动画
+        //指定webview加载对应URL，并设置可见
+        if(!net.matches(".*[:][/]{2}.*"))
+            net = "http://" + net;
+        //TODO:展示载入动画
         webView.loadUrl(net);
         //结束动画
         webView.setWebViewClient(myClient);
@@ -250,11 +256,11 @@ public class HomeFragment extends Fragment
     public void changeVisible(int changePlan){
         if(changePlan == SHOW_INDEX){
             web_navy.setVisibility(View.VISIBLE);
-            webView_home.stopLoading();
-            webView_home.setVisibility(View.GONE);
+            pageWebView.stopLoading();
+            pageWebView.setVisibility(View.GONE);
         }else if(changePlan == SHOW_WEB){
             web_navy.setVisibility(View.GONE);
-            webView_home.setVisibility(View.VISIBLE);
+            pageWebView.setVisibility(View.VISIBLE);
         }
     }
     public boolean isIndexVisible(){
@@ -262,6 +268,34 @@ public class HomeFragment extends Fragment
             return true;
         return false;
     }
+
+
+    public void backPage(){
+        if(pageWebView.canGoBack()){
+            if(isIndexVisible())
+                changeVisible(SHOW_WEB);
+            else
+                pageWebView.goBack();
+        }else
+            changeVisible(SHOW_INDEX);
+    }
+    public void forPage(){
+        if(pageWebView.canGoForward()){
+            if(isIndexVisible())
+                changeVisible(SHOW_WEB);
+            else
+                pageWebView.goForward();
+        }
+    }
+
+    public boolean canBack(){
+        return pageWebView.canGoBack();
+    }
+
+    public boolean canFor(){
+        return pageWebView.canGoForward();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -275,29 +309,6 @@ public class HomeFragment extends Fragment
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-        void onClickBackward();
-        void onClickForward();
         void onClickHome();
-    }
-    public void backPage(){
-        if(webView_home.canGoBack()){
-            if(isIndexVisible())
-                changeVisible(SHOW_WEB);
-            else
-                webView_home.goBack();
-        }else
-            changeVisible(SHOW_INDEX);
-    }
-    public void forPage(){
-        if(webView_home.canGoForward()){
-            if(isIndexVisible())
-                changeVisible(SHOW_WEB);
-            else
-                webView_home.goForward();
-        }
-    }
-
-    public boolean canBack(){
-        return webView_home.canGoBack();
     }
 }

@@ -17,104 +17,133 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
-            android:background="@drawable/shape_menu_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_menu_main">
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_keep"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
                 android:drawableTop="@drawable/ic_keep"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_keep" />
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_bookmark"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
                 android:drawableTop="@drawable/ic_bookmark"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_bookmark" />
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_download"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
                 android:drawableTop="@drawable/ic_download"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_download" />
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_renovate"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
                 android:drawableTop="@drawable/ic_renovate"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_renovate" />
         </LinearLayout>
 
         <View
-            android:layout_marginLeft="@dimen/small_plus_dimen"
-            android:layout_marginRight="@dimen/small_plus_dimen"
-            android:background="@color/gray"
             android:layout_width="match_parent"
-            android:layout_height="2dp"/>
+            android:layout_height="1dp"
+            android:layout_marginEnd="@dimen/mid_dimen"
+            android:layout_marginStart="@dimen/mid_dimen"
+            android:background="@color/gray" />
 
         <LinearLayout
-            android:background="@drawable/shape_menu_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_menu_main">
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_share"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
+                android:drawableTint="@color/iconGray"
                 android:drawableTop="@drawable/ic_share"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_share" />
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_about"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
+                android:drawableTint="@color/iconGray"
                 android:drawableTop="@drawable/ic_about"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_about" />
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_setting"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
+                android:drawableTint="@color/iconGray"
                 android:drawableTop="@drawable/ic_setting"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_setting" />
 
             <com.jxnu.cure.geekbrowser.AdjustDrawButton
                 android:id="@+id/button_menu_exit"
+                style="@style/ButtonNoShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_dimen"
                 android:layout_weight="1"
+                android:background="@drawable/shape_button_no_border_light"
+                android:drawableTint="@color/iconGray"
                 android:drawableTop="@drawable/ic_exit"
-                android:paddingBottom="@dimen/small_dimen"
-                android:paddingTop="@dimen/small_dimen"
+                android:paddingBottom="@dimen/small_plus_dimen"
+                android:paddingTop="@dimen/small_plus_dimen"
                 android:text="@string/menu_exit" />
         </LinearLayout>
 
