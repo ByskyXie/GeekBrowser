@@ -3,6 +3,8 @@ package com.jxnu.cure.geekbrowser;
 import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,18 +17,31 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity
         implements PageFragment.OnFragmentInteractionListener, View.OnClickListener {
     private ImageButton navFor, navBack, navMenu, navPage, navHome;
+    private LinearLayout navLayFor, navLayBack, navLayMenu, navLayPage, navLayHome;
     private Dialog exitDialog;
     private PopupWindow popupWindow;
     private View indexMenu;
     private int iconWH;
+    private ActHandler handler = new ActHandler(this);
     //页面集合
     private ArrayList<PageFragment> pageFragmentArrayList = new ArrayList<PageFragment>();
     private int currentPageNum;
+
+    static class ActHandler extends Handler implements Serializable{
+        private MainActivity act;
+        protected ActHandler(MainActivity act) {
+            this.act = act;
+        }
+        protected void notifyNavButtonState(){
+            act.detectForwardAndBack(act.currentPageNum);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +50,9 @@ public class MainActivity extends BaseActivity
         currentPageNum = 0;
         pageFragmentArrayList.add(
                 (PageFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_page));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("ActHandler",handler);
+        pageFragmentArrayList.get(0).setArguments(bundle);
         initialUI();
     }
 
@@ -51,11 +69,11 @@ public class MainActivity extends BaseActivity
         navPage = findViewById(R.id.navigation_page);
         navHome = findViewById(R.id.navigation_home);
         //点击事件
-        findViewById(R.id.layout_navigation_backward).setOnClickListener(this);
-        findViewById(R.id.layout_navigation_forward).setOnClickListener(this);
-        findViewById(R.id.layout_navigation_menu).setOnClickListener(this);
-        findViewById(R.id.layout_navigation_page).setOnClickListener(this);
-        findViewById(R.id.layout_navigation_home).setOnClickListener(this);
+        navLayBack = findViewById(R.id.layout_navigation_backward); navLayBack.setOnClickListener(this);
+        navLayFor = findViewById(R.id.layout_navigation_forward);   navLayFor.setOnClickListener(this);
+        navLayMenu = findViewById(R.id.layout_navigation_menu);     navLayMenu.setOnClickListener(this);
+        navLayPage = findViewById(R.id.layout_navigation_page);     navLayPage.setOnClickListener(this);
+        navLayHome = findViewById(R.id.layout_navigation_home);     navLayHome.setOnClickListener(this);
         //设置长宽 & 图标对齐 & margin
         params = (LayoutParams) navFor.getLayoutParams();
         params.width = params.height = iconWH;
@@ -186,10 +204,14 @@ public class MainActivity extends BaseActivity
             case R.id.layout_navigation_forward:
                 pageFragmentArrayList.get(currentPageNum)
                         .forPage();
+                //检测能否前进后退并进行相应处理
+                detectForwardAndBack(currentPageNum);
                 break;
             case R.id.layout_navigation_backward:
                 pageFragmentArrayList.get(currentPageNum)
                         .backPage();
+                //检测能否前进后退并进行相应处理
+                detectForwardAndBack(currentPageNum);
                 break;
             case R.id.layout_navigation_menu:
                 attr = getWindow().getAttributes();
@@ -245,6 +267,24 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    protected void detectForwardAndBack(int position){
+        if(pageFragmentArrayList.get(position).canFor()
+                || (pageFragmentArrayList.get(position).isIndexVisible() && pageFragmentArrayList.get(position).canFor())){
+            navLayFor.setEnabled(true);
+            navFor.getBackground().setBounds(0,0,iconWH,iconWH);
+        }else{
+            navLayFor.setEnabled(false);
+            navFor.getBackground().setBounds(iconWH/4,iconWH/4,iconWH*3/4,iconWH*3/4);
+        }
+        if(pageFragmentArrayList.get(position).canBack()
+                || !pageFragmentArrayList.get(position).isIndexVisible()){
+            navLayBack.setEnabled(true);
+            navBack.getBackground().setBounds(0,0,iconWH,iconWH);
+        }else{
+            navLayBack.setEnabled(false);
+            navBack.getBackground().setBounds(iconWH/4,iconWH/4,iconWH*3/4,iconWH*3/4);
+        }
+    }
     @Override
     public void onFragmentInteraction(Uri uri) {
 

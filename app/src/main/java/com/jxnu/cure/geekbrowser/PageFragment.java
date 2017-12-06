@@ -3,17 +3,23 @@ package com.jxnu.cure.geekbrowser;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -42,7 +48,6 @@ public class PageFragment extends Fragment
     final static int SHOW_INDEX = 0;
     final static int SHOW_WEB = 1;
     // TODO: Rename parameter arguments, choose names that match
-    private String temp;
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -61,6 +66,8 @@ public class PageFragment extends Fragment
     private RecyclerView recycler_user;
     private ArrayList<IndexItem> item_list_user;
     private RecyclerIndexAdapter.OnItemClickListener onItemClickListener_user;
+    //传递消息
+    private MainActivity.ActHandler handler;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,20 +80,53 @@ public class PageFragment extends Fragment
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             if(pageWebView!=null)
-                pageWebView.loadUrl(temp);
+                view.reload();
             return true;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            //TODO：执行去广告操作
+            //TODO：加载完成、执行去广告操作
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            //TODO:网页加载进度条
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();  //等待证书响应
         }
     }
+
+    class FragmentWebChromeClient extends WebChromeClient{
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if(newProgress < 100){
+                String pro = newProgress+"%";
+                //这里写要展示进度的UI处理
+            }
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+
+        }
+    }
+
     public PageFragment() {
         // Required empty public constructor
     }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -109,11 +149,7 @@ public class PageFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.button_connect:
-                temp = etWebsite.getText().toString();
-                loadURL(temp,pageWebView);
-                break;
-            case R.id.editText_website:
-
+                loadURL(etWebsite.getText().toString(),pageWebView);
                 break;
         }
     }
@@ -133,10 +169,10 @@ public class PageFragment extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_page, container, false);
+        iconWH = (getResources().getDisplayMetrics().widthPixels/13);
         Button button = view.findViewById(R.id.button_connect);
         Drawable[] draws = button.getCompoundDrawables();
-        iconWH = (getResources().getDisplayMetrics().widthPixels/13);
-        draws[2].setBounds(0,0,iconWH*2,iconWH*2);
+        draws[2].setBounds(0,0,(int)(iconWH*0.7),(int)(iconWH*0.7));
         button.setCompoundDrawables(draws[0],draws[1],draws[2],draws[3]);
         return view;
     }
@@ -181,11 +217,27 @@ public class PageFragment extends Fragment
 
         //显示网页布局及输入框的初始化
         pageWebView = act.findViewById(R.id.webview_page);     pageWebView.setVisibility(View.GONE);//一开始不显示加载网页
-        etWebsite =  act.findViewById(R.id.editText_website);  etWebsite.setOnClickListener(this);
+        etWebsite =  act.findViewById(R.id.editText_website);
+        etWebsite.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER){
+                    //当按下确定键时
+                    loadURL(etWebsite.getText().toString(),pageWebView);
+                    return true;
+                }
+                return false;
+            }
+        });
         connectButton = act.findViewById(R.id.button_connect);          connectButton.setOnClickListener(this);
         webSettings = pageWebView.getSettings();
         //TODO:防范脚本攻击
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);   //将图片调整到适合webview的大小
+        webSettings.setLoadWithOverviewMode(true);  // 缩放至屏幕的大小
+        webSettings.setSupportZoom(true);   //缩放支持
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
     }
 
     public void loadURL(String net,WebView webView){
@@ -194,11 +246,10 @@ public class PageFragment extends Fragment
         //指定webview加载对应URL，并设置可见
         if(!net.matches(".*[:][/]{2}.*"))
             net = "http://" + net;
-        //TODO:展示载入动画
         webView.loadUrl(net);
-        //结束动画
         webView.setWebViewClient(myClient);
         changeVisible(SHOW_WEB);
+        handler.notifyNavButtonState();
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -210,6 +261,12 @@ public class PageFragment extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        handler = (MainActivity.ActHandler)args.getSerializable("ActHandler");
     }
 
     @Override
@@ -263,12 +320,12 @@ public class PageFragment extends Fragment
             pageWebView.setVisibility(View.VISIBLE);
         }
     }
+
     public boolean isIndexVisible(){
         if(web_navy.getVisibility()==View.VISIBLE )
             return true;
         return false;
     }
-
 
     public void backPage(){
         if(pageWebView.canGoBack()){
@@ -279,6 +336,7 @@ public class PageFragment extends Fragment
         }else
             changeVisible(SHOW_INDEX);
     }
+
     public void forPage(){
         if(pageWebView.canGoForward()){
             if(isIndexVisible())

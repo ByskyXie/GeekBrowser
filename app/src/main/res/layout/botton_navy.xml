@@ -17,7 +17,7 @@
         <ImageButton
             android:contentDescription="后退"
             android:id="@+id/navigation_backward"
-            android:backgroundTint="#d0ffffff"
+            android:backgroundTint="#e0ffffff"
             android:clickable="false"
             android:focusable="false"
             android:layout_gravity="center"
@@ -40,7 +40,7 @@
         <ImageButton
             android:contentDescription="前进"
             android:id="@+id/navigation_forward"
-            android:backgroundTint="#d0ffffff"
+            android:backgroundTint="#e0ffffff"
             android:clickable="false"
             android:focusable="false"
             android:layout_gravity="center"
@@ -63,7 +63,7 @@
         <ImageButton
             android:contentDescription="菜单"
             android:id="@+id/navigation_menu"
-            android:backgroundTint="#d0ffffff"
+            android:backgroundTint="#e0ffffff"
             android:clickable="false"
             android:focusable="false"
             android:layout_gravity="center"
@@ -86,7 +86,7 @@
         <ImageButton
             android:contentDescription="标签"
             android:id="@+id/navigation_page"
-            android:backgroundTint="#d0ffffff"
+            android:backgroundTint="#e0ffffff"
             android:clickable="false"
             android:focusable="false"
             android:layout_gravity="center"
@@ -109,7 +109,7 @@
         <ImageButton
             android:contentDescription="主页"
             android:id="@+id/navigation_home"
-            android:backgroundTint="#d0ffffff"
+            android:backgroundTint="#e0ffffff"
             android:clickable="false"
             android:focusable="false"
             android:layout_gravity="center"
