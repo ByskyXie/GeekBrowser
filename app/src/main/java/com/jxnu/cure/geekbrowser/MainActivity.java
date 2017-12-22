@@ -191,7 +191,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onClick(View view) {
-        WindowManager.LayoutParams attr;
         switch (view.getId()) {
             case R.id.button_exit_cancel:
                 exitDialog.cancel();
@@ -214,11 +213,7 @@ public class MainActivity extends BaseActivity
                 detectForwardAndBack(currentPageNum);
                 break;
             case R.id.layout_navigation_menu:
-                attr = getWindow().getAttributes();
-                attr.alpha = 0.7f;
-                getWindow().setAttributes(attr);
-                popupWindow.showAtLocation(navMenu, Gravity.BOTTOM, 0,
-                        findViewById(R.id.layout_navigation_backward).getHeight());
+                showMenu();
                 break;
             case R.id.layout_navigation_page:
                 break;
@@ -227,63 +222,83 @@ public class MainActivity extends BaseActivity
                 break;
             //以下为菜单选项处理
             case R.id.index_menu_outside:
-                popupWindow.dismiss();
-                attr = getWindow().getAttributes();
-                attr.alpha = 1f;
-                getWindow().setAttributes(attr);
+                cancelMenu();
                 break;
             case R.id.layout_index_menu_drop:
-                attr = getWindow().getAttributes();
-                attr.alpha = 1f;
-                getWindow().setAttributes(attr);
-                popupWindow.dismiss();
+                cancelMenu();
                 break;
             case R.id.button_menu_keep:
 
+                cancelMenu();
                 break;
             case R.id.button_menu_bookmark:
 
+                cancelMenu();
                 break;
             case R.id.button_menu_download:
 
+                cancelMenu();
                 break;
             case R.id.button_menu_renovate:
-
+                pageFragmentArrayList.get(currentPageNum).renovate();
+                cancelMenu();
                 break;
             case R.id.button_menu_share:
 
+                cancelMenu();
                 break;
             case R.id.button_menu_about:
 
+                cancelMenu();
                 break;
             case R.id.button_menu_setting:
 
+                cancelMenu();
                 break;
             case R.id.button_menu_exit:
                 //TODO:退出前保存数据
+                cancelMenu();
                 finish();
                 System.exit(0);
                 break;
         }
     }
 
+    protected void cancelMenu(){
+        if(!popupWindow.isShowing())
+            return;
+        WindowManager.LayoutParams attr = getWindow().getAttributes();
+        popupWindow.dismiss();
+        attr = getWindow().getAttributes();
+        attr.alpha = 1f;
+        getWindow().setAttributes(attr);
+    }
+
+    protected void showMenu(){
+        WindowManager.LayoutParams attr = getWindow().getAttributes();
+        attr.alpha = 0.7f;
+        getWindow().setAttributes(attr);
+        popupWindow.showAtLocation(navMenu, Gravity.BOTTOM, 0,
+                findViewById(R.id.layout_navigation_backward).getHeight());
+    }
+
     protected void detectForwardAndBack(int position){
-        if(pageFragmentArrayList.get(position).canFor()
-                || (pageFragmentArrayList.get(position).isIndexVisible() && pageFragmentArrayList.get(position).canFor())){
-            navLayFor.setEnabled(true);
-            navFor.getBackground().setBounds(0,0,iconWH,iconWH);
-        }else{
-            navLayFor.setEnabled(false);
-            navFor.getBackground().setBounds(iconWH/4,iconWH/4,iconWH*3/4,iconWH*3/4);
-        }
-        if(pageFragmentArrayList.get(position).canBack()
-                || !pageFragmentArrayList.get(position).isIndexVisible()){
-            navLayBack.setEnabled(true);
-            navBack.getBackground().setBounds(0,0,iconWH,iconWH);
-        }else{
-            navLayBack.setEnabled(false);
-            navBack.getBackground().setBounds(iconWH/4,iconWH/4,iconWH*3/4,iconWH*3/4);
-        }
+//        if(pageFragmentArrayList.get(position).canFor()
+//                || (pageFragmentArrayList.get(position).isIndexVisible() && pageFragmentArrayList.get(position).canFor())){
+//            navLayFor.setEnabled(true);
+//            navFor.getBackground().setBounds(0,0,iconWH,iconWH);
+//        }else{
+//            navLayFor.setEnabled(false);
+//            navFor.getBackground().setBounds(iconWH/4,iconWH/4,iconWH*3/4,iconWH*3/4);
+//        }
+//        if(pageFragmentArrayList.get(position).canBack()
+//                || !pageFragmentArrayList.get(position).isIndexVisible()){
+//            navLayBack.setEnabled(true);
+//            navBack.getBackground().setBounds(0,0,iconWH,iconWH);
+//        }else{
+//            navLayBack.setEnabled(false);
+//            navBack.getBackground().setBounds(iconWH/4,iconWH/4,iconWH*3/4,iconWH*3/4);
+//        }
     }
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -294,6 +309,7 @@ public class MainActivity extends BaseActivity
     public void onClickHome() {
         pageFragmentArrayList.get(currentPageNum)
                 .changeVisible(PageFragment.SHOW_INDEX);
+
     }
 
 }

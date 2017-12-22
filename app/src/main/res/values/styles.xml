@@ -46,7 +46,11 @@
     </style>
 
     <style name="ButtonNoShadow" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/shape_button_no_border_light</item>
+    </style>
 
+    <style name="ButtonNoShadowTransparent" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/shape_button_no_border_transparent</item>
     </style>
 
 </resources>

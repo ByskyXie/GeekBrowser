@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.URI;
@@ -54,9 +55,10 @@ public class PageFragment extends Fragment
     private FragmentWebClient myClient; //网址代理
     private WebSettings webSettings;//网页显示的设置
     private EditText etWebsite;    //网址输入框
+    private TextView textViewTitle;
     private WebView pageWebView;   //网页显示控件
     private Button connectButton;  //确定键
-    private LinearLayout web_navy;
+    private LinearLayout webNavy;
     private int iconWH;
     //本地网页
     private RecyclerView recycler_sys;
@@ -87,13 +89,15 @@ public class PageFragment extends Fragment
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            //TODO：加载完成、执行去广告操作
+            //TODO：执行去广告操作
+            textViewTitle.setText(view.getTitle());
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             //TODO:网页加载进度条
+            textViewTitle.setText(view.getTitle());
         }
 
         @Override
@@ -182,7 +186,8 @@ public class PageFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         Activity act = getActivity();
         //网页收藏栏总布局
-        web_navy = act.findViewById(R.id.layout_web_navy);
+        webNavy = act.findViewById(R.id.layout_web_navy);
+        textViewTitle = act.findViewById(R.id.text_view_current_web_title);
         //系统导航栏的监听器实例化及界面显示
         onItemClickListener_sys = new RecyclerSysWebAdapter.OnItemClickListener() {
             @Override
@@ -283,6 +288,7 @@ public class PageFragment extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
+        pageWebView.destroy();
         mListener = null;
     }
 
@@ -311,18 +317,23 @@ public class PageFragment extends Fragment
     }
 
     public void changeVisible(int changePlan){
+        //
         if(changePlan == SHOW_INDEX){
-            web_navy.setVisibility(View.VISIBLE);
+            webNavy.setVisibility(View.VISIBLE);
             pageWebView.stopLoading();
             pageWebView.setVisibility(View.GONE);
+            getActivity().findViewById(R.id.layout_show_title).setVisibility(View.GONE);
+            getActivity().findViewById(R.id.layout_input_website).setVisibility(View.VISIBLE);
         }else if(changePlan == SHOW_WEB){
-            web_navy.setVisibility(View.GONE);
+            webNavy.setVisibility(View.GONE);
             pageWebView.setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.layout_show_title).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.layout_input_website).setVisibility(View.GONE);
         }
     }
 
     public boolean isIndexVisible(){
-        if(web_navy.getVisibility()==View.VISIBLE )
+        if(webNavy.getVisibility()==View.VISIBLE )
             return true;
         return false;
     }
@@ -344,6 +355,15 @@ public class PageFragment extends Fragment
             else
                 pageWebView.goForward();
         }
+    }
+
+    public void clearUpStack(){
+        pageWebView.clearHistory();
+    }
+
+    public void renovate(){
+        pageWebView.stopLoading();
+        pageWebView.reload();
     }
 
     public boolean canBack(){

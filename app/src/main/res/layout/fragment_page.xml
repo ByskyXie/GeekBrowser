@@ -1,84 +1,89 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/layout_input_website"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/layout_inputWebsite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mini_dimen"
-            android:background="@drawable/layout_border"
-            android:paddingEnd="@dimen/mini_dimen"
-            android:paddingStart="@dimen/small_plus_dimen">
-
-            <EditText
-                android:id="@+id/editText_website"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="4"
-                android:hint="@string/hint_website"
-                android:inputType="textUri"
-                android:maxLines="1"
-                android:textSize="20sp" />
-
-            <com.jxnu.cure.geekbrowser.AdjustDrawButton
-                android:id="@+id/button_connect"
-                style="@style/ButtonNoShadow"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:drawableRight="@drawable/ic_connect"
-                android:text="前往"
-                android:textColor="@color/iconGray"
-                android:textSize="21sp"
-                android:tint="@color/iconGray" />
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mini_dimen"
+        android:background="@drawable/layout_border"
+        android:paddingEnd="@dimen/mini_dimen"
+        android:paddingStart="@dimen/small_dimen">
 
         <EditText
-            android:id="@+id/edit_text_current_web"
+            android:id="@+id/editText_website"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4"
+            android:hint="@string/hint_website"
+            android:inputType="textUri"
+            android:maxLines="1"
+            android:textSize="20sp" />
+
+        <com.jxnu.cure.geekbrowser.AdjustDrawButton
+            android:id="@+id/button_connect"
+            style="@style/ButtonNoShadowTransparent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:drawableRight="@drawable/ic_connect"
+            android:text="前往"
+            android:textColor="@color/iconGray"
+            android:textSize="21sp"
+            android:tint="@color/iconGray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_show_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/small_dimen"
+        android:paddingStart="@dimen/small_dimen"
+        android:layout_margin="@dimen/mini_dimen"
+        android:background="@drawable/layout_border"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/text_view_current_web_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/mini_dimen"
-            android:background="@drawable/layout_border"
+            android:ellipsize="end"
             android:inputType="textUri"
             android:maxLines="1"
-            android:visibility="gone" />
+            android:textSize="20sp" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_web_navy"
+    <LinearLayout
+        android:id="@+id/layout_web_navy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/mini_dimen"
+        android:layout_marginStart="@dimen/mini_dimen"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_sys_website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/mini_dimen"
+            android:background="@drawable/shape_sys_web_navy" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_user_website"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/mini_dimen"
-            android:layout_marginStart="@dimen/mini_dimen"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_sys_website"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/mini_dimen"
-                android:background="@drawable/shape_sys_web_navy" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_user_website"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/mini_dimen"
-                android:background="@drawable/shape_sys_web_navy" />
-
-        </LinearLayout>
-
-        <WebView
-            android:id="@+id/webview_page"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_marginBottom="@dimen/mini_dimen"
+            android:background="@drawable/shape_sys_web_navy" />
 
     </LinearLayout>
 
-</FrameLayout>
+    <WebView
+        android:id="@+id/webview_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
