@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_page_menu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/mini_dimen"
+    android:paddingBottom="@dimen/mini_dimen"
+    android:background="@drawable/shape_dialog_page_menu"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_view_page_select_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_page_menu_item"
+        android:paddingTop="@dimen/mini_dimen"
+        android:paddingBottom="@dimen/mini_dimen"
+        android:paddingLeft="@dimen/mid_dimen"
+        android:paddingRight="@dimen/mid_dimen"
+        android:text="@string/page_menu_select"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/text_view_page_select_bookmark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_page_menu_item"
+        android:paddingTop="@dimen/mini_dimen"
+        android:paddingBottom="@dimen/mini_dimen"
+        android:paddingLeft="@dimen/mid_dimen"
+        android:paddingRight="@dimen/mid_dimen"
+        android:text="@string/page_menu_bookmark"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/text_view_page_select_index"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_page_menu_item"
+        android:paddingTop="@dimen/mini_dimen"
+        android:paddingBottom="@dimen/mini_dimen"
+        android:paddingLeft="@dimen/mid_dimen"
+        android:paddingRight="@dimen/mid_dimen"
+        android:text="@string/page_menu_index"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/text_view_page_select_tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_page_menu_item"
+        android:paddingTop="@dimen/mini_dimen"
+        android:paddingBottom="@dimen/mini_dimen"
+        android:paddingLeft="@dimen/mid_dimen"
+        android:paddingRight="@dimen/mid_dimen"
+        android:text="@string/page_menu_tools"
+        android:textSize="20sp" />
+</LinearLayout>

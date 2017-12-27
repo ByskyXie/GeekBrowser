@@ -4,8 +4,9 @@ import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Layout;
+import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,29 +17,33 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity
-        implements PageFragment.OnFragmentInteractionListener, View.OnClickListener {
+        implements PageFragment.OnFragmentInteractionListener, View.OnClickListener{
     private ImageButton navFor, navBack, navMenu, navPage, navHome;
     private LinearLayout navLayFor, navLayBack, navLayMenu, navLayPage, navLayHome;
-    private Dialog exitDialog;
+    private ActHandler handler = new ActHandler(this);
+    private Dialog dialogExit, dialogPageMenu;
     private PopupWindow popupWindow;
     private View indexMenu;
-    private int iconWH;
-    private ActHandler handler = new ActHandler(this);
+    private int iconWH,screenW,screenH;
     //页面集合
     private ArrayList<PageFragment> pageFragmentArrayList = new ArrayList<PageFragment>();
     private int currentPageNum;
+    private GestureDetector gestureDetector;
 
-    static class ActHandler extends Handler implements Serializable{
+    static class ActHandler extends Handler implements Serializable {
         private MainActivity act;
+
         protected ActHandler(MainActivity act) {
             this.act = act;
         }
-        protected void notifyNavButtonState(){
+
+        protected void notifyNavButtonState() {
             act.detectForwardAndBack(act.currentPageNum);
         }
     }
@@ -51,7 +56,7 @@ public class MainActivity extends BaseActivity
         pageFragmentArrayList.add(
                 (PageFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_page));
         Bundle bundle = new Bundle();
-        bundle.putSerializable("ActHandler",handler);
+        bundle.putSerializable("ActHandler", handler);
         pageFragmentArrayList.get(0).setArguments(bundle);
         initialUI();
     }
@@ -60,20 +65,26 @@ public class MainActivity extends BaseActivity
     protected void initialUI() {
         LayoutParams params;
         //宽度
-        int width = getResources().getDisplayMetrics().widthPixels;
-        iconWH = width / 13;
-        int margin = (int) ((1.0 * width - iconWH * 5) / (2 * 5));
+        screenW = getResources().getDisplayMetrics().widthPixels;
+        screenH = getResources().getDisplayMetrics().heightPixels;
+        iconWH = screenW / 13;
+        int margin = (int) ((1.0 * screenW - iconWH * 5) / (2 * 5));
         navFor = findViewById(R.id.navigation_forward);
         navBack = findViewById(R.id.navigation_backward);
         navMenu = findViewById(R.id.navigation_menu);
         navPage = findViewById(R.id.navigation_page);
         navHome = findViewById(R.id.navigation_home);
         //点击事件
-        navLayBack = findViewById(R.id.layout_navigation_backward); navLayBack.setOnClickListener(this);
-        navLayFor = findViewById(R.id.layout_navigation_forward);   navLayFor.setOnClickListener(this);
-        navLayMenu = findViewById(R.id.layout_navigation_menu);     navLayMenu.setOnClickListener(this);
-        navLayPage = findViewById(R.id.layout_navigation_page);     navLayPage.setOnClickListener(this);
-        navLayHome = findViewById(R.id.layout_navigation_home);     navLayHome.setOnClickListener(this);
+        navLayBack = findViewById(R.id.layout_navigation_backward);
+        navLayBack.setOnClickListener(this);
+        navLayFor = findViewById(R.id.layout_navigation_forward);
+        navLayFor.setOnClickListener(this);
+        navLayMenu = findViewById(R.id.layout_navigation_menu);
+        navLayMenu.setOnClickListener(this);
+        navLayPage = findViewById(R.id.layout_navigation_page);
+        navLayPage.setOnClickListener(this);
+        navLayHome = findViewById(R.id.layout_navigation_home);
+        navLayHome.setOnClickListener(this);
         //设置长宽 & 图标对齐 & margin
         params = (LayoutParams) navFor.getLayoutParams();
         params.width = params.height = iconWH;
@@ -97,6 +108,8 @@ public class MainActivity extends BaseActivity
         navHome.setScaleType(ImageView.ScaleType.FIT_CENTER);
         //
         initialMenu();
+        initialGesture();
+        initialPageMenu();
     }
 
     protected void initialMenu() {
@@ -133,13 +146,74 @@ public class MainActivity extends BaseActivity
         popupWindow.setTouchable(true);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_BUTTON_PRESS:
-                break;
-        }
-        return super.onTouchEvent(event);
+    protected void initialGesture(){
+        gestureDetector =  new GestureDetector(this, new GestureDetector.OnGestureListener() {
+            /**
+             *  轻击事件,如果这个过程中产生了onLongPress、onScroll和onFling事件，就不会产生onSingleTapUp事件。
+             * */
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+
+            /**
+             * 当长按事件发生时(通过OnGestureListener接口实现)
+             */
+            @Override
+            public void onLongPress(MotionEvent e) {
+                showPageDialog(e.getX(),e.getY());
+            }
+
+            /**
+             *   点击了触摸屏，但是没有移动和弹起的动作。onShowPress和onDown的区别在于
+             *   onDown是，一旦触摸屏按下，就马上产生onDown事件，但是onShowPress是onDown事件产生后，
+             *   一段时间内，如果没有移动鼠标和弹起事件，就认为是onShowPress事件。
+             * */
+            @Override
+            public void onShowPress(MotionEvent e) {;}
+
+            /**
+             *      滚动事件，当在触摸屏上迅速的移动，会产生onScroll。由ACTION_MOVE产生
+             *      e1：第1个ACTION_DOWN MotionEvent
+             *      e2：最后一个ACTION_MOVE MotionEvent
+             *      distanceX：距离上次产生onScroll事件后，X抽移动的距离
+             *      distanceY：距离上次产生onScroll事件后，Y抽移动的距离
+             * */
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+
+            /**
+             * 用户按下触摸屏、快速移动后松开,这个时候，你的手指运动是有加速度的。
+             * 由1个MotionEvent ACTION_DOWN,
+             * 多个ACTION_MOVE, 1个ACTION_UP触发
+             * e1：第1个ACTION_DOWN MotionEvent
+             * e2：最后一个ACTION_MOVE MotionEvent
+             * velocityX：X轴上的移动速度，像素/秒
+             * velocityY：Y轴上的移动速度，像素/秒
+             * */
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                return false;
+            }
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+        });
+    }
+
+    private void initialPageMenu(){
+        View layout = LayoutInflater.from(this).inflate(R.layout.dialog_page_menu, null);
+        layout.findViewById(R.id.text_view_page_select_text).setOnClickListener(this);
+        layout.findViewById(R.id.text_view_page_select_bookmark).setOnClickListener(this);
+        layout.findViewById(R.id.text_view_page_select_index).setOnClickListener(this);
+        layout.findViewById(R.id.text_view_page_select_tools).setOnClickListener(this);
+        //菜单
+        dialogPageMenu = new Dialog(this, R.style.DialogPageMenu);
+        dialogPageMenu.setContentView(layout);
     }
 
     /**
@@ -151,6 +225,8 @@ public class MainActivity extends BaseActivity
             popupWindow.dismiss();
         else if (pageFragmentArrayList.get(currentPageNum).canBack())
             pageFragmentArrayList.get(currentPageNum).backPage();
+        else if(!pageFragmentArrayList.get(currentPageNum).isIndexVisible())
+            pageFragmentArrayList.get(currentPageNum).changeVisible(PageFragment.SHOW_INDEX);
         else
             showExitDialog();
         //super.onBackPressed();
@@ -160,22 +236,22 @@ public class MainActivity extends BaseActivity
      * 弹出退出菜单
      */
     public void showExitDialog() {
-        if (exitDialog != null) { //已经创建则显示
-            exitDialog.show();
+        if (dialogExit != null) { //已经创建则显示
+            dialogExit.show();
             return;
         }
 //        创建显示对象（确定显示格式，但内容未定）
-        exitDialog = new Dialog(this, R.style.DialogShow);
+        dialogExit = new Dialog(this, R.style.DialogExit);
 //        创建显示的内容
         LinearLayout baseLayout = (LinearLayout) LayoutInflater.from(this)
-                .inflate(R.layout.exit_application_layout, null);
+                .inflate(R.layout.dialog_exit_application, null);
 //        建立点击事件处理对象
         baseLayout.findViewById(R.id.button_exit_cancel).setOnClickListener(this);
         baseLayout.findViewById(R.id.button_exit_confirm).setOnClickListener(this);
 //        给Dialog传入要显示的内容
-        exitDialog.setContentView(baseLayout);
+        dialogExit.setContentView(baseLayout);
 //        获取Window管理当前界面，从而实现对内容的显示设置
-        Window dialogWindow = exitDialog.getWindow();
+        Window dialogWindow = dialogExit.getWindow();
         dialogWindow.setGravity(Gravity.CENTER);
         WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
 //        x y 作为计算的起始点，全屏则为0
@@ -186,14 +262,46 @@ public class MainActivity extends BaseActivity
         layoutParams.height = baseLayout.getMeasuredHeight();
         layoutParams.width = baseLayout.getMeasuredWidth();
         dialogWindow.setAttributes(layoutParams);
-        exitDialog.show();
+        dialogExit.show();
+    }
+
+    /**
+     * 弹出页面菜单
+     */
+    protected void showPageDialog(float x, float y) {
+        if(dialogPageMenu==null)
+            initialPageMenu();
+        //TODO：确定显示位置而后显示
+        Window window = dialogPageMenu.getWindow();
+        WindowManager.LayoutParams attri = window.getAttributes();
+        View root = dialogPageMenu.findViewById(R.id.layout_page_menu);
+        root.measure(0, 0);
+        int titleH = (findViewById(R.id.layout_input_website)).getHeight();
+        //如果越界
+        if (x + root.getWidth() > screenW)
+            x -= root.getWidth();
+        if (y + root.getHeight() > screenH-titleH)
+            y -= root.getHeight();
+        //执行设置
+        attri.x = (int)x-root.getWidth();
+        attri.y = (int)y-root.getHeight()-titleH;
+//        Toast.makeText(this,"x="+x+" y="+y+" w="+root.getWidth()+" h="+root.getHeight(),Toast.LENGTH_SHORT).show();
+        window.setAttributes(attri);
+        dialogPageMenu.show();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(gestureDetector.onTouchEvent(event))
+            return true;
+        return super.onTouchEvent(event);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_exit_cancel:
-                exitDialog.cancel();
+                dialogExit.cancel();
                 break;
             case R.id.button_exit_confirm:
                 //TODO:退出前保存数据
@@ -261,11 +369,13 @@ public class MainActivity extends BaseActivity
                 finish();
                 System.exit(0);
                 break;
+
+            //接下来是page menu点击事件
         }
     }
 
-    protected void cancelMenu(){
-        if(!popupWindow.isShowing())
+    protected void cancelMenu() {
+        if (!popupWindow.isShowing())
             return;
         WindowManager.LayoutParams attr = getWindow().getAttributes();
         popupWindow.dismiss();
@@ -274,7 +384,7 @@ public class MainActivity extends BaseActivity
         getWindow().setAttributes(attr);
     }
 
-    protected void showMenu(){
+    protected void showMenu() {
         WindowManager.LayoutParams attr = getWindow().getAttributes();
         attr.alpha = 0.7f;
         getWindow().setAttributes(attr);
@@ -282,7 +392,11 @@ public class MainActivity extends BaseActivity
                 findViewById(R.id.layout_navigation_backward).getHeight());
     }
 
-    protected void detectForwardAndBack(int position){
+    protected GestureDetector getGestureDetector(){
+        return gestureDetector;
+    }
+
+    protected void detectForwardAndBack(int position) {
 //        if(pageFragmentArrayList.get(position).canFor()
 //                || (pageFragmentArrayList.get(position).isIndexVisible() && pageFragmentArrayList.get(position).canFor())){
 //            navLayFor.setEnabled(true);
@@ -300,6 +414,7 @@ public class MainActivity extends BaseActivity
 //            navBack.getBackground().setBounds(iconWH/4,iconWH/4,iconWH*3/4,iconWH*3/4);
 //        }
     }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 

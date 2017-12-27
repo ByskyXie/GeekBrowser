@@ -21,8 +21,8 @@
         <item name ="android:windowExitAnimation">@anim/dialog_out</item>
     </style>
 
-    <!-- Dialog show style -->
-    <style name="DialogShow" parent="android:style/Theme.Dialog">
+    <!-- Dialog exit style -->
+    <style name="DialogExit" parent="android:style/Theme.Dialog">
         <!-- background transparent -->
         <item name = "android:windowBackground">@android:color/transparent</item>
         <item name = "android:windowContentOverlay">@null</item>
@@ -36,6 +36,25 @@
         <item name = "android:windowNoTitle">true</item>
         <!-- 半透明 -->
         <item name = "android:windowIsTranslucent">true</item>
+        <!-- point out the anim -->
+        <item name = "android:windowAnimationStyle">@style/DialogAnim</item>
+    </style>
+
+    <!-- Dialog page menu style -->
+    <style name="DialogPageMenu" parent="android:style/Theme.Dialog">
+        <!-- background transparent -->
+        <item name = "android:windowBackground">@android:color/transparent</item>
+        <item name = "android:windowContentOverlay">@null</item>
+        <!-- 悬浮于Activity -->
+        <item name = "android:windowIsFloating">true</item>
+        <!-- border frame -->
+        <item name = "android:windowFrame">@null</item>
+        <!-- vague effect -->
+        <item name = "android:backgroundDimEnabled">false</item>
+        <!-- no title -->
+        <item name = "android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name = "android:windowIsTranslucent">false</item>
         <!-- point out the anim -->
         <item name = "android:windowAnimationStyle">@style/DialogAnim</item>
     </style>

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
@@ -222,6 +223,14 @@ public class PageFragment extends Fragment
 
         //显示网页布局及输入框的初始化
         pageWebView = act.findViewById(R.id.webview_page);     pageWebView.setVisibility(View.GONE);//一开始不显示加载网页
+        pageWebView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(v.hasOnClickListeners())
+                    return v.performClick();
+                return ((MainActivity)getActivity()).getGestureDetector().onTouchEvent(event);
+            }
+        });
         etWebsite =  act.findViewById(R.id.editText_website);
         etWebsite.setOnKeyListener(new View.OnKeyListener() {
             @Override

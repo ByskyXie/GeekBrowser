@@ -40,10 +40,10 @@
         android:id="@+id/layout_show_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/small_dimen"
-        android:paddingStart="@dimen/small_dimen"
         android:layout_margin="@dimen/mini_dimen"
         android:background="@drawable/layout_border"
+        android:paddingEnd="@dimen/small_dimen"
+        android:paddingStart="@dimen/small_dimen"
         android:visibility="gone">
 
         <TextView
@@ -84,6 +84,7 @@
     <WebView
         android:id="@+id/webview_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:longClickable="true" />
 
 </LinearLayout>
